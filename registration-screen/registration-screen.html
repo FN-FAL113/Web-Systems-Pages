@@ -3,20 +3,12 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title></title>
+	<title>Registration Page</title>
 
 	<!-- Bootstrap core CSS and JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-<style>
-	  img {
-	  display: block;
-	  margin-left: auto;
-	  margin-right: auto;
-}
-</style>
-	
-</head>
+
 </head>
 <body>
 	
@@ -36,82 +28,88 @@
 		<!--- Second row --->
 		<div class="row mx-auto">
 
-			<div class="col-4 border border-4 mx-auto">
+			<div class="col-4 border border-4 mx-auto p-3">
 				<h3 class="border-bottom text-center">Create Account</h3>
 
-				<form class="me-3">
+				<form class="me-3" action="welcome_screen.html" method="post">
 					<div class="row">
-						
-						
+
 						<div class="col-12">
-							<label for="text" class="form-label">Name</label>
+							<label for="lastname" class="form-label"> Last Name</label>
 							<div class="input-group mb-3">
-								<span class="input-group-text" id="basic-addon1">🙍</span>
-								<input type="text" class="form-control" id="form_first_name" placeholder="Full name">
+								<!-- <span class="input-group-text" id="basic-addon1">🙍</span> -->
+								<input type="text" class="form-control" id="lastname" placeholder="Last name" required>
 							</div>
 						</div>
 
 						<div class="col-12">
-							<label for="text" class="form-label">Username</label>
+							<label for="firstname" class="form-label"> First Name</label>
 							<div class="input-group mb-3">
-								<input type="text" class="form-control" placeholder="Username" id="user_name">
+								<!-- <span class="input-group-text" id="basic-addon1">🙍</span> -->
+								<input type="text" class="form-control" id="firstname" placeholder="First name" required>
 							</div>
 						</div>
 
 						<div class="col-12">
-							<label for="text" class="form-label">Email</label>
+							<label for="username" class="form-label">Username</label>
+							<div class="input-group mb-3">
+								<input type="text" class="form-control" placeholder="Username" id="username" required>
+							</div>
+						</div>
+
+						<div class="col-12">
+							<label for="email" class="form-label">Email</label>
 							<div class="input-group mb-3">
 								<span class="input-group-text" id="basic-addon1">📧</span>
-								<input type="email" class="form-control" id="email" placeholder="xyz@maildomain.com">
+								<input type="email" class="form-control" id="email" placeholder="xyz@maildomain.com" required>
+							</div>
+						</div>
+
+						<div class="col-12 mb-3">
+							<label for="birth" class="form-label">Date of Birth</label>
+							<input type="date" id="birth" class="form-control" required>
+						</div>
+
+						<div class="col-12">
+							<label for="add" class="form-label">Address</label>
+							<div class="input-group mb-3">
+								<span class="input-group-text" id="address">🏠</span>
+								<input type="text" class="form-control" id="add" placeholder="Zone, Brg, Municipality, Region" required>
 							</div>
 						</div>
 
 						<!--- Gender Container --->
-						
-							<label for="text" class="form-label">Gender</label>
-							<div class="row">
-								<div class="col-3">
-									<div class="form-check form-check-inline">
-  										<input class="form-check-input" type="checkbox" value="" id="flexCheckChecked">
-  										<label class="form-check-label" for="flexCheckChecked">Male</label>
-									</div>
-								</div>
-	
-								<div class="col-3">
-									<div class="form-check form-check-inline">
-  										<input class="form-check-input" type="checkbox" value="" id="flexCheckChecked">
-  										<label class="form-check-label" for="flexCheckChecked">Female</label>				
-									</div>
-								</div>
+						<div class="col-12 mb-3">
+							<label class="form-label">Gender</label>
+							<div class="gender">
+								<input type="radio" name="sex" id="male" class="form-check-input" required>
+								<label for="male" class="male">Male</label>
+								<input type="radio" name="sex" id="female" class="form-check-input ms-3" required>
+								<label for="female" class="male">Female</label>
 							</div>
-						
-						<!--- Gender Container --->
+						</div>
+
+						<div class="col-12">
+							<label for="upload" class="form-label">Upload Photo</label>
+							<div class="input-group mb-3">
+								<input type="file" class="form-control" id="upload" aria-describedby="inputGroupFileAddon04" aria-label="Upload" required required>
+							</div>
+						</div>
 
 						<div class="col-12">
 							<label for="password" class="form-label">Password</label>
 							<div class="input-group mb-3">
 								<span class="input-group-text" id="basic-addon1">*</span>
-								<input type="password" class="form-control" id="passwprd" placeholder="Password">
+								<input type="password" class="form-control" id="password" placeholder="Password" required>
 							</div>
 						</div>
 
 						<div class="col-12">
-							<label for="password" class="form-label">Repeat Password</label>
+							<label for="bio" class="form-label">Bio</label>
 							<div class="input-group mb-3">
-								<span class="input-group-text" id="basic-addon1">*</span>
-								<input type="password" class="form-control" id="password" placeholder="Repeat Password">
+								<input type="text" class="h-50 form-control" id="bio" placeholder="Short description here...">
 							</div>
 						</div>
-
-						
-						<div class="col-12">
-					      <label for="text" class="form-label"><h6 class="">Choose Profile Picture</h6></label>
-						<div class="picture">
-						  <img src="https://lh3.googleusercontent.com/LfmMVU71g-HKXTCP_QWlDOemmWg4Dn1rJjxeEsZKMNaQprgunDTtEuzmcwUBgupKQVTuP0vczT9bH32ywaF7h68mF-osUSBAeM6MxyhvJhG6HKZMTYjgEv3WkWCfLB7czfODidNQPdja99HMb4qhCY1uFS8X0OQOVGeuhdHy8ln7eyr-6MnkCcy64wl6S_S6ep9j7aJIIopZ9wxk7Iqm-gFjmBtg6KJVkBD0IA6BnS-XlIVpbqL5LYi62elCrbDgiaD6Oe8uluucbYeL1i9kgr4c1b_NBSNe6zFwj7vrju4Zdbax-GPHmiuirf2h86eKdRl7A5h8PXGrCDNIYMID-J7_KuHKqaM-I7W5yI00QDpG9x5q5xOQMgCy1bbu3St1paqt9KHrvNS_SCx-QJgBTOIWW6T0DHVlvV_9YF5UZpN7aV5a79xvN1Gdrc7spvSs82v6gta8AJHCgzNSWQw5QUR8EN_-cTPF6S-vifLa2KtRdRAV7q-CQvhMrbBCaEYY73bQcPZFd9XE7HIbHXwXYA=s200-no" style="width:50%;"class="picture-src" id="PicturePreview" >
-					   	  <input type="file" id="picture">
-					   </div>     
-					    </div>
-						
 
 						<div class="col-12 mb-2">
 							<div class="row">
@@ -127,12 +125,11 @@
 						</div>
 
 						<div class="row mx-auto">
-						 <button class="btn-danger btn btn-lg btn-primary" type="submit">Sign Up</button>
+						 <button class="btn-danger btn btn-lg btn-primary" type="submit">Register</button>
 						</div>
 
 					</div>
 				</form>
-
 				
 			</div>
 		</div>
