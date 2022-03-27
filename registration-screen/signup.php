@@ -10,41 +10,9 @@
 	$password = $_POST['password'] ?? null;
 	$description = $_POST['description'] ?? null;
 	$agree_terms = $_POST['agree_terms'] ?? null;
-	$has_error = 0;
-	$error_msg = '';
+	$isPost = $_SERVER["REQUEST_METHOD"] === "POST";
 
-	if($_SERVER["REQUEST_METHOD"] === "POST") {
 
-		if(!isset($firstname) || strlen(trim($firstname)) == 0 ){
-			$has_error = 1;
-			$error_msg .= ' &bull; First name is required.<br />';
-		}
-
-		if(!isset($lastname) || strlen(trim($lastname)) == 0 ){
-			$has_error = 1;
-			$error_msg .= ' &bull; Last name is required.<br />';
-		}
-
-		if(!isset($username) || strlen(trim($username)) == 0 ){
-			$has_error = 1;
-			$error_msg .= ' &bull; User name is required.<br />';
-		}
-
-		if(!isset($email) || strlen(trim($email)) == 0 ){
-			$has_error = 1;
-			$error_msg .= ' &bull; Email is required.<br />';
-		}
-
-		if(!isset($password) || strlen(trim($password)) == 0 ){
-			$has_error = 1;
-			$error_msg .= ' &bull; Password is required.<br />';
-		}
-
-		if(!isset($agree_terms) || strlen(trim($agree_terms)) == 0 ){
-			$has_error = 1;
-			$error_msg .= ' &bull; Please review terms and consitions.<br />';
-		}
-	}
 
 ?>
 <!DOCTYPE html>
@@ -61,7 +29,7 @@
 </head>
 <body>
 
-	<style type="text/css"> .has_error{ color: #842029; } .has_error input{ color: #842029; border-color: #842029; background-color: #f8d7da; } </style>
+	<style type="text/css"> .has_error{ color: #842029; } .has_error input{ color: #842029; border-color: #842029; } </style>
 	
 	<div class="container">
 
@@ -74,14 +42,7 @@
 				</div>
 			</div>
 
-			<?php if($has_error == 1): ?>
-			<div class="col-12">
-				<div class="alert alert-danger" role="alert">
-					<strong class="">Attention!</strong>
-					<p class=""><?php echo $error_msg; ?></p>
-				</div>
-			</div>
-			<?php endif; ?>
+			
 			
 		</div>
 
@@ -103,6 +64,11 @@
 										<input type="text" class="form-control" id="firstname" name="firstname" placeholder="First name" value="<?php echo $firstname; ?>">
 									</div>
 								</div>
+								<?php if($isPost && !isset($firstname) || strlen(trim($firstname)) == 0){
+									$error_msg_first = ' ⚠ First name is required.';
+									checkError($error_msg_first);
+								} ?>
+								
 
 								<div class="<?php echo ( $_SERVER['REQUEST_METHOD'] === 'POST' && ( !isset($lastname) || strlen(trim($lastname)) == 0 ) ? 'has_error' : '' ); ?>">
 									<label for="lastname" class="form-label"> Last Name *</label>
@@ -110,6 +76,10 @@
 										<input type="text" class="form-control" id="lastname" name="lastname" placeholder="Last name" value="<?php echo $lastname; ?>">
 									</div>
 								</div>
+								<?php if($isPost && !isset($lastname) || strlen(trim($lastname)) == 0){
+									$error_msg_last = ' ⚠ Last name is required.';
+									checkError($error_msg_last);
+								} ?>
 
 								<div class="<?php echo ( $_SERVER['REQUEST_METHOD'] === 'POST' && ( !isset($username) || strlen(trim($username)) == 0 ) ? 'has_error' : '' ); ?>">
 									<label for="username" class="form-label">Username *</label>
@@ -117,6 +87,10 @@
 										<input type="text" class="form-control" placeholder="Username" id="username" name="username" value="<?php echo $username; ?>">
 									</div>
 								</div>
+								<?php if($isPost && !isset($username) || strlen(trim($username)) == 0){
+									$error_msg_username = ' ⚠ User name is required.';
+									checkError($error_msg_username);
+								} ?>
 
 								<div class="<?php echo ( $_SERVER['REQUEST_METHOD'] === 'POST' && ( !isset($email) || strlen(trim($email)) == 0 ) ? 'has_error' : '' ); ?>">
 									<label for="email" class="form-label">Email *</label>
@@ -125,6 +99,10 @@
 										<input type="email" class="form-control" id="email" name="email" placeholder="xyz@maildomain.com" value="<?php echo $email; ?>">
 									</div>
 								</div> 
+								<?php if($isPost && !isset($email) || strlen(trim($email)) == 0){
+									$error_msg_email = ' ⚠ Email is required.';
+									checkError($error_msg_email);
+								} ?>
 
 								<div class="">					 
 									<label for="birth" class="form-label">Date of Birth</label>
@@ -173,6 +151,10 @@
 										<input type="password" class="form-control" id="password" name="password" placeholder="Password">
 									</div>
 								</div>
+								<?php if($isPost && !isset($password) || strlen(trim($password)) == 0 ){
+									$error_msg_password = ' ⚠ Password is required.';
+									checkError($error_msg_password);
+								} ?>
 
 								<div class="">
 									<label for="description" class="form-label">Bio</label>
@@ -199,6 +181,11 @@
 									</div>
 								</div>
 							</div>
+							<?php if($isPost && !isset($agree_terms) || strlen(trim($agree_terms)) == 0 ){
+									$error_msg_terms = ' ⚠ Please review terms and consitions.';
+									checkError($error_msg_terms);
+							} ?>
+
 
 							<div class="row mx-auto">
 								<button class="btn-danger btn btn-lg btn-primary" type="submit">Register</button>
@@ -211,6 +198,16 @@
 			</div>
 			<!--- Second row --->
 
+			<?php 
+
+				function checkError($msg){
+					echo "<div class=\"col-12\">";
+					echo	"<div class=\"px-0 pt-0\" role=\"alert\">";
+					echo 		"<p class=\"has_error\">$msg</p>";
+					echo	"</div>";
+					echo "</div>";
+				}
+			?>
 
 		</div>
 
