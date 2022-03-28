@@ -83,7 +83,7 @@
 										<input type="text" class="form-control" id="lastname" name="lastname" placeholder="Last name" value="<?php echo $lastname; ?>">
 									</div>
 								</div>
-								<?php if($isPost && 0 && $flag != 2 ){
+								<?php if($isPost && $flag != 2 ){
 									$error_msg = " $error_icon Last name is required.";
 									checkError($error_msg);
 								} ?>
@@ -94,7 +94,7 @@
 										<input type="text" class="form-control" placeholder="Username" id="username" name="username" value="<?php echo $username; ?>">
 									</div>
 								</div>
-								<?php if($isPost && 0 && $flag != 3 ){
+								<?php if($isPost && $flag != 3 ){
 									$error_msg = " $error_icon User name is required.";
 									checkError($error_msg);
 								} ?>
@@ -179,7 +179,7 @@
 							<div class="col-12 mb-2">
 								<div class="row">
 									<div class="col-12">
-										<div class="form-check form-check-inline mt-4 <?php if $_SERVER['REQUEST_METHOD'] === 'POST' && !isset($agree_terms) ? '' : $flag=6) ?>">
+										<div class="form-check form-check-inline mt-4 <?php echo ( $_SERVER['REQUEST_METHOD'] === 'POST' && !isset($agree_terms) ) ? '' : $flag=6 ?>">
 											<input class="form-check-input" type="checkbox" value="1" id="flexCheckChecked" name="agree_terms">
 											<label class="form-check-label" for="flexCheckChecked">
 												* I agree to all <u>Terms of Service</u>
