@@ -71,7 +71,7 @@
 										<input type="text" class="form-control" id="firstname" name="firstname" placeholder="First name" value="<?php echo $firstname; ?>">
 									</div>
 								</div>
-								<?php if($isPost && (!isset($firstname) || strlen(trim($firstname)) == 0) && $flag !=1 ){
+								<?php if($isPost && $flag != 1 ){
 									$error_msg = " $error_icon First name is required.";
 									checkError($error_msg);
 								} ?>
@@ -83,7 +83,7 @@
 										<input type="text" class="form-control" id="lastname" name="lastname" placeholder="Last name" value="<?php echo $lastname; ?>">
 									</div>
 								</div>
-								<?php if($isPost && (!isset($lastname) || strlen(trim($lastname)) == 0) && $flag !=2 ){
+								<?php if($isPost && 0 && $flag != 2 ){
 									$error_msg = " $error_icon Last name is required.";
 									checkError($error_msg);
 								} ?>
@@ -94,7 +94,7 @@
 										<input type="text" class="form-control" placeholder="Username" id="username" name="username" value="<?php echo $username; ?>">
 									</div>
 								</div>
-								<?php if($isPost && (!isset($username) || strlen(trim($username)) == 0) && $flag !=3 ){
+								<?php if($isPost && 0 && $flag != 3 ){
 									$error_msg = " $error_icon User name is required.";
 									checkError($error_msg);
 								} ?>
@@ -106,7 +106,7 @@
 										<input type="email" class="form-control" id="email" name="email" placeholder="xyz@maildomain.com" value="<?php echo $email; ?>">
 									</div>
 								</div> 
-								<?php if($isPost && (!isset($email) || strlen(trim($email)) == 0) && $flag !=4 ){
+								<?php if($isPost && $flag != 4 ){
 									$error_msg = " $error_icon E-mail is required.";
 									checkError($error_msg);
 								} ?>
@@ -151,16 +151,16 @@
 									</div>
 								</div>
 
-								<div class="<?php echo ( $_SERVER['REQUEST_METHOD'] === 'POST' && ( !isset($password) || strlen(trim($password)) == 0 ) ? 'has_error' : '' ); ?>">
+								<div class="<?php echo ( $_SERVER['REQUEST_METHOD'] === 'POST' && ( !isset($password) || strlen(trim($password)) == 0 ) ? 'has_error' : $flag=5 ); ?>">
 									<label for="password" class="form-label">Password *</label>
 									<div class="input-group mb-3">
 										<span class="input-group-text" id="basic-addon1">*</span>
 										<input type="password" class="form-control" id="password" name="password" placeholder="Password">
 									</div>
 								</div>
-								<?php if($isPost && (!isset($password) || strlen(trim($password)) == 0) ){
-									$error_msg_password = " $error_icon Password is required.";
-									checkError($error_msg_password);
+								<?php if($isPost && $flag != 5 ){
+									$error_msg = " $error_icon Password is required.";
+									checkError($error_msg);
 								} ?>
 
 								<div class="">
@@ -179,7 +179,7 @@
 							<div class="col-12 mb-2">
 								<div class="row">
 									<div class="col-12">
-										<div class="form-check form-check-inline mt-4">
+										<div class="form-check form-check-inline mt-4 <?php if $_SERVER['REQUEST_METHOD'] === 'POST' && !isset($agree_terms) ? '' : $flag=6) ?>">
 											<input class="form-check-input" type="checkbox" value="1" id="flexCheckChecked" name="agree_terms">
 											<label class="form-check-label" for="flexCheckChecked">
 												* I agree to all <u>Terms of Service</u>
@@ -188,9 +188,9 @@
 									</div>
 								</div>
 							</div>
-							<?php if($isPost && (!isset($agree_terms) || strlen(trim($agree_terms)) == 0) ){
-									$error_msg_terms =" $error_icon Please review terms and conditions.";
-									checkError($error_msg_terms);
+							<?php if($isPost && $flag != 6){
+									$error_msg =" $error_icon Please review terms and conditions.";
+									checkError($error_msg);
 							} ?>
 
 
