@@ -35,6 +35,16 @@
 
 	<style type="text/css"> .has_error{ color: #b01c2a; } .has_error input{ color: #b01c2a; border-color: #b01c2a; border-width: medium;} 
 			
+			div.animated {
+    		opacity: 1;
+    		animation: fade 1s linear;
+		}
+
+
+			@keyframes fade {
+  			0%,100% { opacity: 0 }
+  			50% { opacity: 1 }
+		}
 
 	</style>
 	
@@ -208,7 +218,7 @@
 			<?php 
 
 				function checkError($msg){
-					echo "<div class=\"col-12\">";
+					echo "<div class=\"col-12 animated\">";
 					echo	"<div class=\"px-0 pt-0\" role=\"alert\">";
 					echo 		"<p class=\"has_error\">$msg</p>";
 					echo	"</div>";
