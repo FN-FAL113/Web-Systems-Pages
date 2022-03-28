@@ -12,8 +12,6 @@
 	$agree_terms = $_POST['agree_terms'] ?? null;
 	$isPost = $_SERVER["REQUEST_METHOD"] === "POST";
 
-
-
 ?>
 <!DOCTYPE html>
 <html>
@@ -64,7 +62,7 @@
 										<input type="text" class="form-control" id="firstname" name="firstname" placeholder="First name" value="<?php echo $firstname; ?>">
 									</div>
 								</div>
-								<?php if($isPost && !isset($firstname) || strlen(trim($firstname)) == 0){
+								<?php if($isPost && (!isset($firstname) || strlen(trim($firstname)) == 0) ){
 									$error_msg_first = ' ⚠ First name is required.';
 									checkError($error_msg_first);
 								} ?>
@@ -76,7 +74,7 @@
 										<input type="text" class="form-control" id="lastname" name="lastname" placeholder="Last name" value="<?php echo $lastname; ?>">
 									</div>
 								</div>
-								<?php if($isPost && !isset($lastname) || strlen(trim($lastname)) == 0){
+								<?php if($isPost && (!isset($lastname) || strlen(trim($lastname)) == 0) ){
 									$error_msg_last = ' ⚠ Last name is required.';
 									checkError($error_msg_last);
 								} ?>
@@ -87,7 +85,7 @@
 										<input type="text" class="form-control" placeholder="Username" id="username" name="username" value="<?php echo $username; ?>">
 									</div>
 								</div>
-								<?php if($isPost && !isset($username) || strlen(trim($username)) == 0){
+								<?php if($isPost && (!isset($username) || strlen(trim($username)) == 0) ){
 									$error_msg_username = ' ⚠ User name is required.';
 									checkError($error_msg_username);
 								} ?>
@@ -99,7 +97,7 @@
 										<input type="email" class="form-control" id="email" name="email" placeholder="xyz@maildomain.com" value="<?php echo $email; ?>">
 									</div>
 								</div> 
-								<?php if($isPost && !isset($email) || strlen(trim($email)) == 0){
+								<?php if($isPost && (!isset($email) || strlen(trim($email)) == 0) ){
 									$error_msg_email = ' ⚠ Email is required.';
 									checkError($error_msg_email);
 								} ?>
@@ -151,7 +149,7 @@
 										<input type="password" class="form-control" id="password" name="password" placeholder="Password">
 									</div>
 								</div>
-								<?php if($isPost && !isset($password) || strlen(trim($password)) == 0 ){
+								<?php if($isPost && (!isset($password) || strlen(trim($password)) == 0) ){
 									$error_msg_password = ' ⚠ Password is required.';
 									checkError($error_msg_password);
 								} ?>
@@ -181,7 +179,7 @@
 									</div>
 								</div>
 							</div>
-							<?php if($isPost && !isset($agree_terms) || strlen(trim($agree_terms)) == 0 ){
+							<?php if($isPost && (!isset($agree_terms) || strlen(trim($agree_terms)) == 0) ){
 									$error_msg_terms = ' ⚠ Please review terms and consitions.';
 									checkError($error_msg_terms);
 							} ?>
