@@ -12,6 +12,11 @@
 	$agree_terms = $_POST['agree_terms'] ?? null;
 	$isPost = $_SERVER["REQUEST_METHOD"] === "POST";
 
+	$flag = 0; 
+
+	$error_icon ='<img src="https://www.seekpng.com/png/full/251-2514375_free-high-quality-error-youtube-icon-png-2018.png" height="20px" width="20px">'; 
+
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -27,7 +32,11 @@
 </head>
 <body>
 
-	<style type="text/css"> .has_error{ color: #842029; } .has_error input{ color: #842029; border-color: #842029; } </style>
+
+	<style type="text/css"> .has_error{ color: #b01c2a; } .has_error input{ color: #b01c2a; border-color: #b01c2a; border-width: medium;} 
+			
+
+	</style>
 	
 	<div class="container">
 
@@ -56,50 +65,50 @@
 
 							<div class="col-lg-6">
 
-								<div class="<?php echo ( $_SERVER['REQUEST_METHOD'] === 'POST' && ( !isset($firstname) || strlen(trim($firstname)) == 0 ) ? 'has_error' : '' ); ?>">
+								<div class="<?php echo ( $_SERVER['REQUEST_METHOD'] === 'POST' && ( !isset($firstname) || strlen(trim($firstname)) == 0 ) ? 'has_error' : $flag=1 ); ?>">
 									<label for="firstname" class="form-label"> First Name *</label>
 									<div class="input-group mb-3">
 										<input type="text" class="form-control" id="firstname" name="firstname" placeholder="First name" value="<?php echo $firstname; ?>">
 									</div>
 								</div>
-								<?php if($isPost && (!isset($firstname) || strlen(trim($firstname)) == 0) ){
-									$error_msg_first = ' ⚠ First name is required.';
-									checkError($error_msg_first);
+								<?php if($isPost && (!isset($firstname) || strlen(trim($firstname)) == 0) && $flag !=1 ){
+									$error_msg = " $error_icon First name is required.";
+									checkError($error_msg);
 								} ?>
 								
 
-								<div class="<?php echo ( $_SERVER['REQUEST_METHOD'] === 'POST' && ( !isset($lastname) || strlen(trim($lastname)) == 0 ) ? 'has_error' : '' ); ?>">
+								<div class="<?php echo ( $_SERVER['REQUEST_METHOD'] === 'POST' && ( !isset($lastname) || strlen(trim($lastname)) == 0 ) ? 'has_error' : $flag=2 ); ?>">
 									<label for="lastname" class="form-label"> Last Name *</label>
 									<div class="input-group mb-3">
 										<input type="text" class="form-control" id="lastname" name="lastname" placeholder="Last name" value="<?php echo $lastname; ?>">
 									</div>
 								</div>
-								<?php if($isPost && (!isset($lastname) || strlen(trim($lastname)) == 0) ){
-									$error_msg_last = ' ⚠ Last name is required.';
-									checkError($error_msg_last);
+								<?php if($isPost && (!isset($lastname) || strlen(trim($lastname)) == 0) && $flag !=2 ){
+									$error_msg = " $error_icon Last name is required.";
+									checkError($error_msg);
 								} ?>
 
-								<div class="<?php echo ( $_SERVER['REQUEST_METHOD'] === 'POST' && ( !isset($username) || strlen(trim($username)) == 0 ) ? 'has_error' : '' ); ?>">
+								<div class="<?php echo ( $_SERVER['REQUEST_METHOD'] === 'POST' && ( !isset($username) || strlen(trim($username)) == 0 ) ? 'has_error' : $flag=3 ); ?>">
 									<label for="username" class="form-label">Username *</label>
 									<div class="input-group mb-3">
 										<input type="text" class="form-control" placeholder="Username" id="username" name="username" value="<?php echo $username; ?>">
 									</div>
 								</div>
-								<?php if($isPost && (!isset($username) || strlen(trim($username)) == 0) ){
-									$error_msg_username = ' ⚠ User name is required.';
-									checkError($error_msg_username);
+								<?php if($isPost && (!isset($username) || strlen(trim($username)) == 0) && $flag !=3 ){
+									$error_msg = " $error_icon User name is required.";
+									checkError($error_msg);
 								} ?>
 
-								<div class="<?php echo ( $_SERVER['REQUEST_METHOD'] === 'POST' && ( !isset($email) || strlen(trim($email)) == 0 ) ? 'has_error' : '' ); ?>">
+								<div class="<?php echo ( $_SERVER['REQUEST_METHOD'] === 'POST' && ( !isset($email) || strlen(trim($email)) == 0 ) ? 'has_error' : $flag=4 ); ?>">
 									<label for="email" class="form-label">Email *</label>
 									<div class="input-group mb-3">
 										<span class="input-group-text" id="basic-addon1">📧</span>
 										<input type="email" class="form-control" id="email" name="email" placeholder="xyz@maildomain.com" value="<?php echo $email; ?>">
 									</div>
 								</div> 
-								<?php if($isPost && (!isset($email) || strlen(trim($email)) == 0) ){
-									$error_msg_email = ' ⚠ Email is required.';
-									checkError($error_msg_email);
+								<?php if($isPost && (!isset($email) || strlen(trim($email)) == 0) && $flag !=4 ){
+									$error_msg = " $error_icon E-mail is required.";
+									checkError($error_msg);
 								} ?>
 
 								<div class="">					 
@@ -150,7 +159,7 @@
 									</div>
 								</div>
 								<?php if($isPost && (!isset($password) || strlen(trim($password)) == 0) ){
-									$error_msg_password = ' ⚠ Password is required.';
+									$error_msg_password = " $error_icon Password is required.";
 									checkError($error_msg_password);
 								} ?>
 
@@ -180,7 +189,7 @@
 								</div>
 							</div>
 							<?php if($isPost && (!isset($agree_terms) || strlen(trim($agree_terms)) == 0) ){
-									$error_msg_terms = ' ⚠ Please review terms and consitions.';
+									$error_msg_terms =" $error_icon Please review terms and conditions.";
 									checkError($error_msg_terms);
 							} ?>
 
