@@ -12,6 +12,20 @@
 	$agree_terms = $_POST['agree_terms'] ?? null;
 	$isPost = $_SERVER["REQUEST_METHOD"] === "POST";
 
+	$target = "./uploads/";
+
+	$uploadSuccess = 1;
+	$uploadFail = 0;
+	$fieldNotEmpty = 1;
+	$fieldIsEmpty = 0;
+	$allPassed = false;
+	
+
+	$GLOBALS['uploadedSuccessfully'] = $GLOBALS['uploadSuccess'];
+	$GLOBALS['target_dir'] = $GLOBALS['target'];
+	$GLOBALS['fieldIsSet'] = $GLOBALS['fieldNotEmpty'];
+
+
 	$flag = 0; 
 
 	$error_icon ='<img src="https://www.seekpng.com/png/full/251-2514375_free-high-quality-error-youtube-icon-png-2018.png" height="20px" width="20px">'; 
@@ -28,6 +42,10 @@
 	<!-- Bootstrap core CSS and JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
 
 	<!-- Sweer Alert -->
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>	
@@ -36,7 +54,10 @@
 <body>
 
 
-	<style type="text/css"> .has_error{ color: #b01c2a; } .has_error input{ color: #b01c2a; border-color: #b01c2a; border-width: medium;} 
+	<style type="text/css"> .has_error{ color: #b01c2a; } .has_error input{ color: #b01c2a; border-color: #b01c2a; border-width: medium;} 	
+			* {
+			font-family: 'Poppins';
+			}
 			
 			div.animated {
     		opacity: 1;
@@ -73,12 +94,12 @@
 					<h3 class="border-bottom text-center pb-4">Create Account</h3>
 					<em class="">Fields having * are required.</em>
 
-					<form class="mt-3" action="<?php $_SERVER['PHP_SELF']; ?>" method="post">
+					<form class="mt-3" action="<?php $_SERVER['PHP_SELF']; ?>" method="post" enctype="multipart/form-data">
 						<div class="row">
 
 							<div class="col-lg-6">
 
-								<div class="<?php echo ( $_SERVER['REQUEST_METHOD'] === 'POST' && ( !isset($firstname) || strlen(trim($firstname)) == 0 ) ? 'has_error' : $flag=1 ); ?>">
+								<div class="<?php echo ( $isPost && ( !isset($firstname) || strlen(trim($firstname)) == 0 ) ? 'has_error' : $flag=1 ); ?>">
 									<label for="firstname" class="form-label"> First Name *</label>
 									<div class="input-group mb-3">
 										<input type="text" class="form-control" id="firstname" name="firstname" placeholder="First name" value="<?php echo $firstname; ?>">
@@ -87,10 +108,11 @@
 								<?php if($isPost && $flag != 1 ){
 									$error_msg = " $error_icon First name is required.";
 									checkError($error_msg);
+									$GLOBALS['fieldIsSet'] = $GLOBALS['fieldIsEmpty'];
 								} ?>
 								
 
-								<div class="<?php echo ( $_SERVER['REQUEST_METHOD'] === 'POST' && ( !isset($lastname) || strlen(trim($lastname)) == 0 ) ? 'has_error' : $flag=2 ); ?>">
+								<div class="<?php echo ( $isPost && ( !isset($lastname) || strlen(trim($lastname)) == 0 ) ? 'has_error' : $flag=2 ); ?>">
 									<label for="lastname" class="form-label"> Last Name *</label>
 									<div class="input-group mb-3">
 										<input type="text" class="form-control" id="lastname" name="lastname" placeholder="Last name" value="<?php echo $lastname; ?>">
@@ -99,9 +121,10 @@
 								<?php if($isPost && $flag != 2 ){
 									$error_msg = " $error_icon Last name is required.";
 									checkError($error_msg);
+									$GLOBALS['fieldIsSet'] = $GLOBALS['fieldIsEmpty'];
 								} ?>
 
-								<div class="<?php echo ( $_SERVER['REQUEST_METHOD'] === 'POST' && ( !isset($username) || strlen(trim($username)) == 0 ) ? 'has_error' : $flag=3 ); ?>">
+								<div class="<?php echo ( $isPost && ( !isset($username) || strlen(trim($username)) == 0 ) ? 'has_error' : $flag=3 ); ?>">
 									<label for="username" class="form-label">Username *</label>
 									<div class="input-group mb-3">
 										<input type="text" class="form-control" placeholder="Username" id="username" name="username" value="<?php echo $username; ?>">
@@ -110,9 +133,10 @@
 								<?php if($isPost && $flag != 3 ){
 									$error_msg = " $error_icon User name is required.";
 									checkError($error_msg);
+									$GLOBALS['fieldIsSet'] = $GLOBALS['fieldIsEmpty'];
 								} ?>
 
-								<div class="<?php echo ( $_SERVER['REQUEST_METHOD'] === 'POST' && ( !isset($email) || strlen(trim($email)) == 0 ) ? 'has_error' : $flag=4 ); ?>">
+								<div class="<?php echo ( $isPost && ( !isset($email) || strlen(trim($email)) == 0 ) ? 'has_error' : $flag=4 ); ?>">
 									<label for="email" class="form-label">Email *</label>
 									<div class="input-group mb-3">
 										<span class="input-group-text" id="basic-addon1">📧</span>
@@ -122,6 +146,7 @@
 								<?php if($isPost && $flag != 4 ){
 									$error_msg = " $error_icon E-mail is required.";
 									checkError($error_msg);
+									$GLOBALS['fieldIsSet'] = $GLOBALS['fieldIsEmpty'];
 								} ?>
 
 								<div class="">					 
@@ -158,13 +183,17 @@
 
 
 								<div class="mt-4">
-									<label for="upload" class="form-label mt-2">Upload Photo</label>
+									<label for="upload" class="form-label mt-2">Upload Photo *</label>
 									<div class="input-group mb-3">
-										<input type="file" class="form-control" id="upload"  aria-label="Upload">
+										<input type="file" class="form-control" name="upload" id="upload" aria-label="Upload">
 									</div>
 								</div>
+								<?php if($isPost){
+									validateUpload();
+								} ?>
+								
 
-								<div class="<?php echo ( $_SERVER['REQUEST_METHOD'] === 'POST' && ( !isset($password) || strlen(trim($password)) == 0 ) ? 'has_error' : $flag=5 ); ?>">
+								<div class="<?php echo ( $isPost && ( !isset($password) || strlen(trim($password)) == 0 ) ? 'has_error' : $flag=5 ); ?>">
 									<label for="password" class="form-label">Password *</label>
 									<div class="input-group mb-3">
 										<span class="input-group-text" id="basic-addon1">*</span>
@@ -174,6 +203,7 @@
 								<?php if($isPost && $flag != 5 ){
 									$error_msg = " $error_icon Password is required.";
 									checkError($error_msg);
+									$GLOBALS['fieldIsSet'] = $GLOBALS['fieldIsEmpty'];
 								} ?>
 
 								<div class="">
@@ -186,13 +216,10 @@
 
 							</div>
 
-
-
-
 							<div class="col-12 mb-2">
 								<div class="row">
 									<div class="col-12">
-										<div class="form-check form-check-inline mt-4 <?php echo ( $_SERVER['REQUEST_METHOD'] === 'POST' && !isset($agree_terms) ) ? '' : $flag=6 ?>">
+										<div class="form-check form-check-inline mt-4 <?php echo ($isPost && !isset($agree_terms)) ? '' :  $flag=6 ?>">
 											<input class="form-check-input" type="checkbox" value="1" id="flexCheckChecked" name="agree_terms">
 											<label class="form-check-label" for="flexCheckChecked">
 												* I agree to all <u>Terms of Service</u>
@@ -204,11 +231,12 @@
 							<?php if($isPost && $flag != 6){
 									$error_msg =" $error_icon Please review terms and conditions.";
 									checkError($error_msg);
+									$GLOBALS['fieldIsSet'] = $GLOBALS['fieldIsEmpty'];
 							} ?>
 
 
 							<div class="row mx-auto">
-								<button class="btn-danger btn btn-lg btn-primary" type="submit">Register</button>
+								<button class="btn-danger btn btn-lg btn-primary" type="submit" name="submit">Register</button>
 							</div>
 
 						</div>
@@ -218,7 +246,34 @@
 			</div>
 			<!--- Second row --->
 
-			<?php 
+			<?php
+
+				function validateUpload(){
+
+					$imageFileType = strtolower(pathinfo($_FILES["upload"]["name"],PATHINFO_EXTENSION));
+
+					$check = filesize($_FILES["upload"]["tmp_name"]);
+
+					if($_FILES["upload"]["name"] == ''){
+						$GLOBALS['uploadedSuccessfully'] = $GLOBALS['uploadFail'];
+    					checkError("Please upload a profile picture!");
+
+					} else if (file_exists($GLOBALS['target_dir'] . basename($_FILES["upload"]["name"]))) {
+    					$GLOBALS['uploadedSuccessfully'] = $GLOBALS['uploadFail'];
+    					checkError("File already exist! Please upload a new one");
+
+ 					} else if($check === false){
+						$GLOBALS['uploadedSuccessfully'] = $GLOBALS['uploadFail'];
+
+					} else if ($_FILES["upload"]["size"] > 500000) {
+    					$GLOBALS['uploadedSuccessfully'] = $GLOBALS['uploadFail'];
+    					checkError("Sorry, your file is too large (size must be < 1MB)");
+    					
+ 					} else if($imageFileType != "jpeg" && $imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "gif"){
+						$GLOBALS['uploadedSuccessfully'] = $GLOBALS['uploadFail'];
+						checkError("Unsupported file type! Please upload using image formats");
+					}
+				} 
 
 				function checkError($msg){
 					echo "<div class=\"col-12 animated\">";
@@ -229,7 +284,21 @@
 				}
 			?>
 			
-			<?php if (isset($_POST['submit']) && isset($firstname) && isset($lastname) && isset($firstname) && isset($username) && isset($firstname) && isset($password) && isset($email) && isset($firstname) && isset($agree_terms)): ?>
+			<?php 
+				if (isset($_POST['submit']) && $GLOBALS['fieldIsSet'] == 1 && $GLOBALS['uploadedSuccessfully'] == 1){ 
+
+					$target_file = $GLOBALS['target_dir'] . basename($_FILES["upload"]["name"]);
+
+					$result = move_uploaded_file( $_FILES["upload"]["tmp_name"] , $target_file );
+					
+					if($result){
+						$allPassed = true;
+					}
+
+				}
+			?>	
+
+			<?php if ($allPassed): ?>
 
 				<script>
 					swal("Successfully Registered", "", "success");
