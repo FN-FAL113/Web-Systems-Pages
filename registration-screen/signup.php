@@ -10,6 +10,7 @@
 	$password = $_POST['password'] ?? null;
 	$description = $_POST['description'] ?? null;
 	$agree_terms = $_POST['agree_terms'] ?? null;
+	$photo = $_FILES['upload']['name'] ?? null;
 	$isPost = $_SERVER["REQUEST_METHOD"] === "POST";
 
 	$target = "./uploads/";
@@ -19,6 +20,7 @@
 	$fieldNotEmpty = 1;
 	$fieldIsEmpty = 0;
 	$allPassed = false;
+	$Passed = false;
 	
 
 	$GLOBALS['uploadedSuccessfully'] = $GLOBALS['uploadSuccess'];
@@ -29,6 +31,32 @@
 	$flag = 0; 
 
 	$error_icon ='<img src="https://www.seekpng.com/png/full/251-2514375_free-high-quality-error-youtube-icon-png-2018.png" height="20px" width="20px">'; 
+
+	if($isPost){
+		validateUpload();
+
+		$pdo = new PDO('mysql:host=localhost;post=3306;dbname=marvel_blog', 'root', '');
+		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+		$statement = $pdo->prepare("INSERT INTO `registration` ( `firstname`, `lastname`, `username`, `email`, `birthday`, `address`, `sex`, `password`, `description`, `agree_terms`, `photo`) VALUES (:firstname, :lastname, :username, :email, :birthday, :address, :sex, :password, :description, :agree_terms, :photo) ");
+
+		$statement->bindValue(':firstname', $firstname);
+		$statement->bindValue(':lastname', $lastname);
+		$statement->bindValue(':username', $username);
+		$statement->bindValue(':email', $email);
+		$statement->bindValue(':birthday', $birth);
+		$statement->bindValue(':address', $home_add);
+		$statement->bindValue(':sex', $sex);
+	    $statement->bindValue(':password', md5($password));
+	    $statement->bindValue(':description', $description);
+	    $statement->bindValue(':agree_terms', $agree_terms);
+	    $statement->bindValue(':photo', $photo);
+
+		$xecute = $statement->execute();
+
+		$Passed = true;
+
+	}
 
 
 ?>
@@ -188,10 +216,6 @@
 										<input type="file" class="form-control" name="upload" id="upload" aria-label="Upload">
 									</div>
 								</div>
-								<?php if($isPost){
-									validateUpload();
-								} ?>
-								
 
 								<div class="<?php echo ( $isPost && ( !isset($password) || strlen(trim($password)) == 0 ) ? 'has_error' : $flag=5 ); ?>">
 									<label for="password" class="form-label">Password *</label>
@@ -298,7 +322,7 @@
 				}
 			?>	
 
-			<?php if ($allPassed): ?>
+			<?php if ($allPassed && $Passed): ?>
 
 				<script>
 					swal("Successfully Registered", "", "success");
