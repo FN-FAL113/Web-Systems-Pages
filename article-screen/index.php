@@ -1,40 +1,41 @@
-<?php 
-  
-  $isset = isset($_POST['submit']);
-  $description = $_POST['description'] ?? null;
-  $cars = $_POST['cars'] ?? null;
-  $article = $_POST['article'] ?? null;
-  $agree_terms = $_POST['agree_terms'] ?? null;
+<?php
 
-  $type = 0;
-  $uploadOk = 0;
-  $flag = 0;
-  $error_icon ='<img src="https://www.seekpng.com/png/full/251-2514375_free-high-quality-error-youtube-icon-png-2018.png" height="20px" width="20px">';
+    $isPost = $_SERVER["REQUEST_METHOD"] === "POST";
+    $title = $_POST['title'] ?? null;
+    $category = $_POST['category'] ?? null;
+    $article = $_POST['article'] ?? null;
+    $visibility = $_POST['visibility'] ?? null;
 
+    $type = 0;
+    $uploadOk = 0;
+    $flag = 0;
+    $error_icon ='<img src="https://www.seekpng.com/png/full/251-2514375_free-high-quality-error-youtube-icon-png-2018.png" height="20px" width="20px">';
 
+    $fieldNotEmpty = 1;
+    $fieldIsEmpty = 0;
+    $GLOBALS['fieldIsSet'] = $GLOBALS['fieldNotEmpty'];
 
-  if ($isset) {
-        
-      $target_dir = "./upload/";
-      $imageFileType = strtolower(pathinfo($_FILES['upload']['name'],PATHINFO_EXTENSION));
-      $time_stamp = time();
-      $targetFile = $target_dir . "user_{$time_stamp}.{$imageFileType}";
+    if($isPost && $_FILES['upload']['name'] != null){
+        $target_dir = "./upload/";
+        $imageFileType = strtolower(pathinfo($_FILES['upload']['name'],PATHINFO_EXTENSION));
+        $time_stamp = time();
+        $targetFile = $target_dir . "photo_{$time_stamp}.{$imageFileType}";
+    }
 
-      // Check the photo
-      photo_check($imageFileType, $type);
+    function insertArticleEntry($title, $category, $article, $photo_name, $visibility) {
+        $db = new PDO('mysql:host=localhost;port=3306;dbname=marvel_blog', 'root', '');
+        $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-      // Check the fields
-      field_check($flag);
+        $query = $db->prepare('INSERT INTO `article_uploads` ( `title`, `category`, `article`, `photo_name`, `visibility`) VALUES ( :title, :category, :article, :photo_name, :visibility ) ');
 
-      echo "$agree_terms";
+        $query->bindValue(':title', $title);
+        $query->bindValue(':category', $category);
+        $query->bindValue(':article', $article);
+        $query->bindValue(':photo_name', $photo_name);
+        $query->bindValue(':visibility', $visibility);
+        $query->execute();
+    }
 
-      if ($type == 0 && $flag == 0) {
-
-        $uploadOk = move_uploaded_file( $_FILES["upload"]["tmp_name"] , $targetFile);
-
-      }
-  }
-  
 ?>
 
 <!doctype html>
@@ -133,16 +134,6 @@
   </head>
 
 <body>
-
-  <?php if ($uploadOk == 1): ?>
-
-    <script>
-
-      swal("Successfully uploaded!", "" , "success");
-
-    </script>
-
-  <?php endif; ?>
     
 <main class="text-white border-4 mx-5 clearfix">
 
@@ -185,76 +176,105 @@
    <div class="row mx-5"><!--ROW 1 -->
     <div class="col-12">
       <h3 class="text-center text-dark fw-bold">Write a Blog</h3>
-    </div>
+    </div> <!--ROW 1 -->
 
       <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post" enctype="multipart/form-data">
           <div class="text-dark mx-5">
 
-            <div class="row">
-                <div class="col-6 <?php echo ( isset($_POST['submit']) && ( !isset($description) || strlen(trim($description)) == 0 ) ? 'has_error' : $flag=1); ?>">
+            <div class="row"> <!--ROW 2 -->
+                <div class="col-6 <?php echo ( $isPost && ( !isset($title) || strlen(trim($title)) == 0 ) ? 'has_error' : $flag=1); ?>">
                   <label for="description" class="form-label fw-bold">Title</label>
                   <div class="col-6 input-group mb-3">
-                    <input type="text" class="h-50 form-control" id="description" name="description" value="<?php echo $description; ?>" placeholder="Title here...">
+                    <input type="text" class="h-50 form-control" id="title" name="title" value="<?php echo $title; ?>" placeholder="Title here...">
                   </div>
+                    <?php
+                        if($isPost && $flag != 1){
+                            $error_msg = " {$error_icon} Title is required.";
+                            checkError($error_msg);
+                            $GLOBALS['fieldIsSet'] = $GLOBALS['fieldIsEmpty'];
+                        }
+                    ?>
                 </div>
-                
 
-                <div class="col-4 my-auto">
-                    <label class="fw-bold" for="Category">Choose Category &nbsp</label>
-                    <select id="cars" name="cars">
-                      <option value="Updates">Updates</option>
-                      <option value="Reviews">Reviews</option>
-                      <option value="Theory">Theory</option>
-                      <option value="Fanfiction">Fanfiction</option>
-                      <option value="Hidden Details">Hidden Details</option>
-                    </select>
+
+                <div class="col-4 <?php echo ( $isPost && ( !isset($category) || strlen(trim($category)) == 0 ) ? 'has_error' : $flag=2); ?>">
+                    <label class="fw-bold" for="category">Choose Category &nbsp</label>
+                    <div class="row-1 my-2">
+                        <select name="category" id="category" class="<?php echo ( ($flag != 2 ? 'border border-danger' : '') ); ?>">
+                            <option value=""></option>
+                            <option value="Updates">Updates</option>
+                            <option value="Reviews">Reviews</option>
+                            <option value="Theory">Theory</option>
+                            <option value="Fanfiction">Fan-Fiction</option>
+                        </select>
+                        <div class="row-1 my-4">
+                        <?php
+                            if($isPost && $flag != 2){
+                                $error_msg = "{$error_icon} Please select a category";
+                                checkError($error_msg);
+                                $GLOBALS['fieldIsSet'] = $GLOBALS['fieldIsEmpty'];
+                            }
+                        ?>
+                        </div>
+                    </div>
                 </div>
-             </div>  
-              <?php 
-                if($isset && $flag != 1){
 
-                  $error_msg = " $error_icon Requiered to fill-up.";
-                  checkError($error_msg);
-                  $flag = 1;
-                } 
-              ?>
+             </div> <!--ROW 2 -->
 
-                <div class="col-12 mb-2 <?php echo ( $_SERVER['REQUEST_METHOD'] === 'POST' && ( !isset($article) || strlen(trim($article)) == 0 ) ? 'has_error' : $flag=2); ?>">
-                  <label class="fw-bold" for="descriptions" class="form-label">Article</label>
+                <div class="col-12 mb-2 <?php echo ( $isPost && ( !isset($article) || strlen(trim($article)) == 0 ) ? 'has_error' : $flag=3); ?>">
+                  <label class="fw-bold form-label" for="article">Article</label>
                   <div class="input-group mb-3">
-                    <textarea name="article" value="<?php echo $article; ?>" class="form-control" id="descriptions" rows="5" cols="300" placeholder="Type or paste your article here"></textarea>
+                    <textarea value="<?php echo $article; ?>" class="form-control"  name="article" id="article" rows="5" cols="300" placeholder="Type or paste your article here"></textarea>
                   </div>
                  </div> 
-                 <?php if($isset && $flag != 2){
-                    $error_msg = " $error_icon Requiered to fill-up.";
-                    checkError($error_msg);
-                  } ?> 
+                    <?php
+                        if($isPost && $flag != 3){
+                            $error_msg = " {$error_icon} Article is required.";
+                            checkError($error_msg);
+                            $GLOBALS['fieldIsSet'] = $GLOBALS['fieldIsEmpty'];
+                        }
+                    ?>
 
-                <div class="col-12 <?php echo ( $_SERVER['REQUEST_METHOD'] === 'POST' && $type == 1) ? 'has_error' : $flag=3; ?>">
-                  <label class="fw-bold" for="upload" class="form-label mt-2">Upload Photo</label>
+                <div class="col-12 <?php echo ( $isPost && $_FILES['upload']['name'] == null) ? 'has_error' : $flag=4; ?>">
+                  <label class="fw-bold form-label mt-2" for="upload">Upload Photo</label>
                   <div class="input-group mb-3">
                     <input type="file" class="form-control" id="upload" name="upload" > 
                   </div>
                 </div>
-                <?php if($isset && $flag != 3){
-                    $error_msg = " $error_icon Plese check or upload a photo.";
-                    checkError($error_msg);
-                  } ?> 
+                    <?php
+                        if($isPost && $flag != 4){
+                            $error_msg = " {$error_icon} Please upload a photo.";
+                            checkError($error_msg);
+                            $type = 1; // no file uploaded
+                        } else if ($isPost && isNotImageFormat($imageFileType)) { // check if the file is a valid image format
+                            $error_msg = " {$error_icon} Invalid file type! Must be png, gif, jpeg or jpg";
+                            checkError($error_msg);
+                            $type = 1;
+                        }
+                    ?>
 
                   <div class="col-12 mb-2">
+                      <label class="fw-bold form-label" for="visibility">Blog Visibility</label>
                     <div class="row">
-                      <div class="col-12 <?php echo ( $_SERVER['REQUEST_METHOD'] === 'POST' && ( !isset($agree_terms) || strlen(trim($agree_terms)) == 4 ) ? 'has_error' : $flag=4); ?>">
-                          <input class="form-check-input" name="agree_terms" value="1" type="checkbox" id="flexCheckChecked">
+                      <div class="col-12 <?php echo ( $isPost && ( !isset($visibility) || strlen(trim($visibility)) == 0 ) ? 'has_error' : $flag=5); ?>">
+                          <input class="form-check-input" name="visibility" value="1" type="checkbox" id="flexCheckChecked">
                           <label class="form-check-label" for="flexCheckChecked">
-                            Public
+                              Public
+                          </label>
+                          <input class="form-check-input" name="visibility" value="1" type="checkbox" id="flexCheckChecked">
+                          <label class="form-check-label" for="flexCheckChecked">
+                              Private
                           </label>
                       </div>
                     </div>
                    </div>
-                   <?php if($isset && $flag != 3 && $agree_terms != 1){
-                    $error_msg = " $error_icon Plese check.";
-                    checkError($error_msg);
-                  } ?> 
+                    <?php
+                        if($isPost && $flag != 5){
+                            $error_msg = " {$error_icon} Please select blog visibility.";
+                            checkError($error_msg);
+                            $GLOBALS['fieldIsSet'] = $GLOBALS['fieldIsEmpty'];
+                        }
+                    ?>
 
                 <div class="row mx-auto">
                     <button class="w-25 btn-danger btn btn-lg btn-primary" type="submit" name="submit">Upload</button>
@@ -265,32 +285,39 @@
 
   </div><!--ROW 1 -->
 
+    <?php
 
-  <?php 
+        function isNotImageFormat($imageFileType) { // check if the file extension is an image type
 
-    function photo_check($imageFileType, &$type) {
+            if ($imageFileType != "jpg" && $imageFileType != "jpeg" && $imageFileType != "png" && $imageFileType != "gif") {
+                return true;
+            }
+        }
 
-    if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif") {
-        $type = 1;
+    ?>
 
-      }
-    }
+    <?php
+        if($isPost && $GLOBALS['fieldIsSet'] == 1 && $type == 0){
+            $uploadOk = move_uploaded_file( $_FILES["upload"]["tmp_name"] , $targetFile);
+            insertArticleEntry($title, $category, $article, "photo_{$time_stamp}.{$imageFileType}", $visibility);
+        }
+    ?>
 
-  ?>
+    <?php if ($uploadOk == 1): ?>
+        <script>
+            swal("Successfully uploaded!", "" , "success");
+        </script>
+    <?php endif; ?>
 
-  <?php 
-
-    function field_check(&$flag) {
-
-      if (!isset($_POST['description']) || !isset($_POST['article']) || !isset($_POST['agree_terms'])):
-
-        $flag = 1;
-
-      endif;
-
-    }
-
-  ?>
+    <?php
+        function checkError($msg){ // display the error message when a field is empty
+            echo "<div class=\"col-12\">";
+            echo  "<div class=\"px-0 pt-0\" role=\"alert\">";
+            echo    "<p class=\"has_error\">$msg</p>";
+            echo  "</div>";
+            echo "</div>";
+        }
+    ?>
 
   </main>
 
@@ -314,16 +341,7 @@
         </footer><!-- FOOTER div -->
       </div>
 
-      <?php 
 
-        function checkError($msg){
-          echo "<div class=\"col-12\">";
-          echo  "<div class=\"px-0 pt-0\" role=\"alert\">";
-          echo    "<p class=\"has_error\">$msg</p>";
-          echo  "</div>";
-          echo "</div>";
-        }
-      ?>
       
 </body>
 </html>
