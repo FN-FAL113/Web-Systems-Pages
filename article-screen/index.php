@@ -206,8 +206,7 @@
                       <option value="Reviews">Reviews</option>
                       <option value="Theory">Theory</option>
                       <option value="Fanfiction">Fanfiction</option>
-                      <option value="Music">Music</option>
-                      <option value="Sports">Sports</option>
+                      <option value="Hidden Details">Hidden Details</option>
                     </select>
                 </div>
              </div>  
