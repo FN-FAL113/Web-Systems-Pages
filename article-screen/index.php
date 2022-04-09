@@ -125,7 +125,56 @@
       } 
 
        /*serves as margins */
-     
+
+
+
+       /* FAde in animation */
+    .fade-in{
+      animation: fadeIn .8s;
+      -webkit-animation: fadeIn .8s;
+      -moz-animation: fadeIn .8s;
+      -o-animation: fadeIn .8s;
+      -ms-animation: fadeIn .8s;
+    }
+    @keyframes fadeIn {
+      0% {opacity:0;}
+      100% {opacity:1;}
+    }
+
+    @-moz-keyframes fadeIn {
+      0% {opacity:0;}
+      100% {opacity:1;}
+    }
+
+    @-webkit-keyframes fadeIn {
+      0% {opacity:0;}
+      100% {opacity:1;}
+    }
+
+    @-o-keyframes fadeIn {
+      0% {opacity:0;}
+      100% {opacity:1;}
+    }
+
+    @-ms-keyframes fadeIn {
+      0% {opacity:0;}
+      100% {opacity:1;}
+    }
+  /* FAde in animation */
+
+
+    .has_error_selection{
+      color: #b01c2a; 
+        border-color: #b01c2a; 
+        border-width: medium;
+
+    }
+
+        hr.solid {
+      border-top: 3px solid #bbb;
+    }
+
+
     </style>
 
     
@@ -175,7 +224,9 @@
 
    <div class="row mx-5"><!--ROW 1 -->
     <div class="col-12">
-      <h3 class="text-center text-dark fw-bold">Write a Blog</h3>
+      <h3 class="text-center text-dark fw-bold">Write a blog</h3>
+      <p class="text-center text-muted fw-light">All fields requires an input</p>
+      <hr class="solid">
     </div> <!--ROW 1 -->
 
       <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post" enctype="multipart/form-data">
@@ -197,11 +248,11 @@
                 </div>
 
 
-                <div class="col-4 <?php echo ( $isPost && ( !isset($category) || strlen(trim($category)) == 0 ) ? 'has_error' : $flag=2); ?>">
+                <div class="col-3 <?php echo ( $isPost && ( !isset($category) || strlen(trim($category)) == 0 ) ? 'has_error' : $flag=2); ?>">
                     <label class="fw-bold" for="category">Choose Category &nbsp</label>
                     <div class="row-1 my-2">
-                        <select name="category" id="category" class="<?php echo ( ($flag != 2 ? 'border border-danger' : '') ); ?>">
-                            <option value=""></option>
+                        <select name="category" id="category" class=" form-select <?php echo ( ($flag != 2 ? 'has_error_selection' : '') ); ?>">
+                            <option value="" selected disabled>Choose category...</option>
                             <option value="Updates">Updates</option>
                             <option value="Reviews">Reviews</option>
                             <option value="Theory">Theory</option>
@@ -217,6 +268,11 @@
                         ?>
                         </div>
                     </div>
+                </div>
+
+                <div  class="col-3">
+                    <img class="" src="https://i1.wp.com/www.popculthq.com/wp-content/uploads/2017/04/Deadpool-laying-down-transparent.png?fit=1132%2C330" height="90px" width="290px">
+                    
                 </div>
 
              </div> <!--ROW 2 -->
@@ -311,7 +367,7 @@
 
     <?php
         function checkError($msg){ // display the error message when a field is empty
-            echo "<div class=\"col-12\">";
+            echo "<div class=\"col-12 fade-in\">";
             echo  "<div class=\"px-0 pt-0\" role=\"alert\">";
             echo    "<p class=\"has_error\">$msg</p>";
             echo  "</div>";
