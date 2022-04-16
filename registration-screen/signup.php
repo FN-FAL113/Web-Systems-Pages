@@ -1,5 +1,5 @@
 <?php
-
+//CHANGES IN LINE 9,35,246
 	$firstname = $_POST['firstname'] ?? null;
 	$lastname = $_POST['lastname'] ?? null;
 	$username = $_POST['username'] ?? null;
@@ -9,7 +9,7 @@
 	$sex = $_POST['sex'] ?? null;
 	$password = $_POST['password'] ?? null;
 	$description = $_POST['description'] ?? null;
-	$agree_terms = $_POST['agree_terms'] ?? null;
+	$agree_terms = $_POST['agree_terms'] ?? '';
 	$photo = $_FILES['upload']['name'] ?? null;
 	$isPost = $_SERVER["REQUEST_METHOD"] === "POST";
 
@@ -32,29 +32,29 @@
 
 	$error_icon ='<img src="https://www.seekpng.com/png/full/251-2514375_free-high-quality-error-youtube-icon-png-2018.png" height="20px" width="20px">'; 
 
-	if($isPost){
-		validateUpload();
+	if($isPost && $agree_terms==1 && $photo !=null &&  $firstname !=null && $lastname!=null && $username!=null && $email!=null && $password!=null){
+		
+			$pdo = new PDO('mysql:host=localhost;post=3306;dbname=marvel_blog', 'root', '');
+			$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-		$pdo = new PDO('mysql:host=localhost;post=3306;dbname=marvel_blog', 'root', '');
-		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			$statement = $pdo->prepare("INSERT INTO `registration` ( `firstname`, `lastname`, `username`, `email`, `birthday`, `address`, `sex`, `password`, `description`, `agree_terms`, `photo`) VALUES (:firstname, :lastname, :username, :email, :birthday, :address, :sex, :password, :description, :agree_terms, :photo) ");
 
-		$statement = $pdo->prepare("INSERT INTO `registration` ( `firstname`, `lastname`, `username`, `email`, `birthday`, `address`, `sex`, `password`, `description`, `agree_terms`, `photo`) VALUES (:firstname, :lastname, :username, :email, :birthday, :address, :sex, :password, :description, :agree_terms, :photo) ");
+			$statement->bindValue(':firstname', $firstname);
+			$statement->bindValue(':lastname', $lastname);
+			$statement->bindValue(':username', $username);
+			$statement->bindValue(':email', $email);
+			$statement->bindValue(':birthday', $birth);
+			$statement->bindValue(':address', $home_add);
+			$statement->bindValue(':sex', $sex);
+		    $statement->bindValue(':password', md5($password));
+		    $statement->bindValue(':description', $description);
+		    $statement->bindValue(':agree_terms', $agree_terms);
+		    $statement->bindValue(':photo', $photo);
 
-		$statement->bindValue(':firstname', $firstname);
-		$statement->bindValue(':lastname', $lastname);
-		$statement->bindValue(':username', $username);
-		$statement->bindValue(':email', $email);
-		$statement->bindValue(':birthday', $birth);
-		$statement->bindValue(':address', $home_add);
-		$statement->bindValue(':sex', $sex);
-	    $statement->bindValue(':password', md5($password));
-	    $statement->bindValue(':description', $description);
-	    $statement->bindValue(':agree_terms', $agree_terms);
-	    $statement->bindValue(':photo', $photo);
+			$xecute = $statement->execute();
 
-		$xecute = $statement->execute();
-
-		$Passed = true;
+			$Passed = true;
+		
 
 	}
 
@@ -216,6 +216,13 @@
 										<input type="file" class="form-control" name="upload" id="upload" aria-label="Upload">
 									</div>
 								</div>
+								<?php
+								  $upload_valid=null;
+									if ($isPost){
+										validateUpload();
+									}
+
+								?>
 
 								<div class="<?php echo ( $isPost && ( !isset($password) || strlen(trim($password)) == 0 ) ? 'has_error' : $flag=5 ); ?>">
 									<label for="password" class="form-label">Password *</label>
@@ -243,7 +250,7 @@
 							<div class="col-12 mb-2">
 								<div class="row">
 									<div class="col-12">
-										<div class="form-check form-check-inline mt-4 <?php echo ($isPost && !isset($agree_terms)) ? '' :  $flag=6 ?>">
+										<div class="form-check form-check-inline mt-4 <?php echo ($isPost && $agree_terms=='') ? '' :  $flag=6 ?>">
 											<input class="form-check-input" type="checkbox" value="1" id="flexCheckChecked" name="agree_terms">
 											<label class="form-check-label" for="flexCheckChecked">
 												* I agree to all <u>Terms of Service</u>
@@ -274,28 +281,30 @@
 
 				function validateUpload(){
 
+					$error_icon ='<img src="https://www.seekpng.com/png/full/251-2514375_free-high-quality-error-youtube-icon-png-2018.png" height="20px" width="20px">'; 
+
 					$imageFileType = strtolower(pathinfo($_FILES["upload"]["name"],PATHINFO_EXTENSION));
 
 					$check = filesize($_FILES["upload"]["tmp_name"]);
 
 					if($_FILES["upload"]["name"] == ''){
 						$GLOBALS['uploadedSuccessfully'] = $GLOBALS['uploadFail'];
-    					checkError("Please upload a profile picture!");
+    					checkError("$error_icon Please upload a profile picture!");
 
 					} else if (file_exists($GLOBALS['target_dir'] . basename($_FILES["upload"]["name"]))) {
     					$GLOBALS['uploadedSuccessfully'] = $GLOBALS['uploadFail'];
-    					checkError("File already exist! Please upload a new one");
+    					checkError("$error_icon File already exist! Please upload a new one");
 
  					} else if($check === false){
 						$GLOBALS['uploadedSuccessfully'] = $GLOBALS['uploadFail'];
 
 					} else if ($_FILES["upload"]["size"] > 500000) {
     					$GLOBALS['uploadedSuccessfully'] = $GLOBALS['uploadFail'];
-    					checkError("Sorry, your file is too large (size must be < 1MB)");
+    					checkError("$error_icon Sorry, your file is too large (size must be < 1MB)");
     					
  					} else if($imageFileType != "jpeg" && $imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "gif"){
 						$GLOBALS['uploadedSuccessfully'] = $GLOBALS['uploadFail'];
-						checkError("Unsupported file type! Please upload using image formats");
+						checkError("$error_icon Unsupported file type! Please upload using image formats");
 					}
 				} 
 
