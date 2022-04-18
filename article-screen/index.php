@@ -313,12 +313,12 @@
                       <label class="fw-bold form-label" for="visibility">Blog Visibility</label>
                     <div class="row">
                       <div class="col-12 <?php echo ( $isPost && ( !isset($visibility) || strlen(trim($visibility)) == 0 ) ? 'has_error' : $flag=5); ?>">
-                          <input class="form-check-input" name="visibility" value="1" type="checkbox" id="flexCheckChecked">
-                          <label class="form-check-label" for="flexCheckChecked">
+                          <input class="form-check-input" name="visibility" value="0" type="radio" id="public">
+                          <label class="form-check-label" for="public">
                               Public
                           </label>
-                          <input class="form-check-input" name="visibility" value="1" type="checkbox" id="flexCheckChecked">
-                          <label class="form-check-label" for="flexCheckChecked">
+                          <input class="form-check-input" name="visibility" value="1" type="radio" id="private">
+                          <label class="form-check-label" for="private">
                               Private
                           </label>
                       </div>
