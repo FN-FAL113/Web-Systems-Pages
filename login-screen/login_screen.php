@@ -1,6 +1,6 @@
 <?php
 
-    $isPost = $_SERVER["REQUEST_METHOD"] === "POST";
+   	$isPost = $_SERVER["REQUEST_METHOD"] === "POST";
     $username_log = $_POST['username_log'] ?? null;
     $password_log = $_POST['password_log'] ?? null;
   
@@ -17,32 +17,20 @@
 
 
     $validate=0; 
-
-
-
-		$pdo = new PDO('mysql:host=localhost;port=3306;dbname=marvel_blog', 'root', ''); // database connection 
-		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // set error
-
-		$query = $pdo->prepare('SELECT * FROM `registration` '); // select/fetch data from database (all data)
-		$query->execute(); // execute query string
-
-
-
-
 ?>
 
 
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
+	<meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Hugo 0.88.1">
     <title>Log in Screen</title>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     
     <!--FONT FAMILY -->
@@ -145,30 +133,25 @@
                    	<?php
                    			if($username_log !=null && $password_log !=null){
                    				$validate=1; 
-
                    			}
-                   			if($validate==1){
 
-                   				$login_statement = $pdo->prepare('SELECT * FROM `registration` WHERE `username` = :username AND `password` = :password '); // select/fetch data from database (all data)
+                   			if($validate==1){
+                          $pdo = new PDO('mysql:host=localhost;port=3306;dbname=marvel_blog', 'root', ''); // database connection 
+                          $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // set error
+
+
+                   				$login_statement = $pdo->prepare('SELECT * FROM `registration` WHERE `username` = :username AND `password` = :password '); // fetch data from database if username and pass exist and same
 													$login_statement->bindValue(':username', $username_log);
 													$login_statement->bindValue(':password', md5($password_log)) ;
-													$login_statement->execute(); // execute query string
+													$login_statement->execute();
 
-													$is_login_okay = $login_statement->rowCount(); 
-									
+                          $data = $login_statement->fetch(PDO::FETCH_ASSOC); // returns true if user exist in the table
 
-													if($is_login_okay == 1){
-													  
-													   $user_data = $login_statement->fetchAll(PDO::FETCH_ASSOC); // gets the values and assigns to the variable
-
-													   foreach ($user_data as $key => $data) {
-													      echo '<pre>';var_dump($data );echo '</pre>'; 
-													   	}
-														}
-
-														else{
+													if($data && $username_log == $data['username'] && md5($password_log) == $data['password'] ){
+													   var_dump($data);
+														} else {
 													   $error_msg = " {$error_icon} Incorrect email or password.";
-		                            checkError($error_msg);
+		                         checkError($error_msg);
 													}
                    				
                    			}
