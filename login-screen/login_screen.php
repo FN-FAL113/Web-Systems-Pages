@@ -1,4 +1,5 @@
 <?php
+// 	update 145-159
 
    	$isPost = $_SERVER["REQUEST_METHOD"] === "POST";
     $username_log = $_POST['username_log'] ?? null;
@@ -126,7 +127,7 @@
 
 			<div class="row">
 				<div class="col-4 mx-auto">
-		  		<form action="login_screen.php" method="post">
+		  		<form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
 		  		  <h1 class="h3 mb-3 fw-normal">Sign in</h1>
 
 		  		  		  		<!-- VALIDATE LOG-IN-->
@@ -141,18 +142,35 @@
 
 
                    				$login_statement = $pdo->prepare('SELECT * FROM `registration` WHERE `username` = :username AND `password` = :password '); // fetch data from database if username and pass exist and same
-													$login_statement->bindValue(':username', $username_log);
-													$login_statement->bindValue(':password', md5($password_log)) ;
-													$login_statement->execute();
 
-                          $data = $login_statement->fetch(PDO::FETCH_ASSOC); // returns true if user exist in the table
+                          $login_statement->execute(
+                            array (
+                              'username' => $username_log,
+                              'password' => md5($password_log)
+                            )
+                          );
 
-													if($data && $username_log == $data['username'] && md5($password_log) == $data['password'] ){
-													   var_dump($data);
-														} else {
-													   $error_msg = " {$error_icon} Incorrect email or password.";
-		                         checkError($error_msg);
-													}
+                          $count = $login_statement->rowcount();
+
+                          if ($count != 0):
+                            header('location: landing_screen.html');
+                          else:
+                            $error_msg = " {$error_icon} Incorrect email or password.";
+                             checkError($error_msg);
+                          endif;
+
+													// $login_statement->bindValue(':username', $username_log);
+													// $login_statement->bindValue(':password', md5($password_log)) ;
+													// $login_statement->execute();
+
+             //              $data = $login_statement->fetch(PDO::FETCH_ASSOC); // returns true if user exist in the table
+
+													// if($data && $username_log == $data['username'] && $password_log == $data['password']){
+													//    var_dump($data);
+													// 	} else {
+													//    $error_msg = " {$error_icon} Incorrect email or password.";
+		           //               checkError($error_msg);
+													// }
                    				
                    			}
 
@@ -194,7 +212,6 @@
 				<div class="register my-3 pt-2">
 					Not registered?
 					<a href="registration-screen.html">Create an acount</a>
-<!-- 		    			<button class="w-100 btn-light btn btn-lg btn-primary" type="submit"><a href="registration-screen.html" class="text-decoration-none ">Register</a></button> -->
 		    		</div>	
 		    		<p class="mb-3 text-muted">&copy; 2017–2022</p>
 
