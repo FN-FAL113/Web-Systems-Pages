@@ -180,6 +180,8 @@
     
     <!-- Custom styles for this template -->
     <link href="navbar.css" rel="stylesheet">
+
+   
   </head>
 
 <body>
@@ -189,7 +191,7 @@
 
   <div class="container">
     <nav class="navbar navbar-expand-lg navbar-light bg-light rounded border" aria-label="Eleventh navbar example"><!-- Nav Bar controls --> 
-      <div class="container-fluid">
+      <div class="container-fluid" id="navbg">
         <a class="navbar-brand brightness" href="#"><img src="https://www.freepnglogos.com/uploads/marvel-logo-png/new-marvel-studios-logo-debuted-marvelstudios-3.png" height="50px" width="180px"></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="" aria-controls="navbarsExample09" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon">test</span>
@@ -386,6 +388,11 @@
             <span class="text-muted">&copy; 2022 Marvel, Inc</span>
           </div>
 
+          <div class="row mx-auto">
+            <button class="btn btn-sm text-muted btn-block" id="bg-button" title="Shift-click to use normal colors">Change Background Color: <span class="text-muted" id="bgcolortext">white</span></button>
+
+          </div>
+
           <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
             <!--facebook -->
             <li class="ms-3"><a href="https://www.facebook.com/MarvelPhilippines/?brand_redir=6883542487" target="_blank"><img class="opacity-50" src="https://cdn-icons-png.flaticon.com/512/20/20673.png" width="27" height="27"><use xlink:href="#facebook"></a></li>
@@ -397,7 +404,7 @@
         </footer><!-- FOOTER div -->
       </div>
 
-
+ <script type="text/javascript" src="bg-color.js"></script>
       
 </body>
 </html>
