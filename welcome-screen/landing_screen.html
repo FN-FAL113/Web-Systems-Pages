@@ -26,66 +26,47 @@
 			font-family: 'Poppins';
 		}		
 
-    	.darken{
-    		color: #212529;
-    	}
-
-		.nav-masthead .nav-link {
-		  padding: .25rem 0;
-		  font-weight: 700;
-		  color: rgba(255, 255, 255, .5);
-		  background-color: transparent;
-		  border-bottom: .25rem solid transparent;
-		}
-
-		.nav-masthead .nav-link:hover,
-		.nav-masthead .nav-link:focus {
-		  border-bottom-color: rgba(255, 0, 0, 0.2);
-		}
-
-		.nav-masthead .nav-link + .nav-link {
-		  margin-left: 1rem;
-		}
-
-		.nav-masthead .active {
-		  color: black;
-		  border-bottom-color: #dc3545;
-		}
-
     </style>
 
 </head>
 <body>
 
 	<!-- Container -->
-	<div class="container">
-		<header class="blog-header pt-3">
-			<div class="row flex-nowrap justify-content-between align-items-center">
-				<div class="col-4">
-					<a href="#"><i class="darken fs-5 me-4 fa-brands fa-facebook-f"></i></a>
-					<a href="#"><i class="darken fs-5 me-4 fa-brands fa-twitter"></i></a>
-					<a href="#"><i class="darken fs-5 me-4 fa-brands fa-instagram-square"></i></a>
-					<a href="#"><i class="darken fs-5 me-4 fa-brands fa-pinterest"></i></a>
-				</div>
-				<div class="col-4 text-center">
-					<img src="https://www.freepnglogos.com/uploads/marvel-logo-png/new-marvel-studios-logo-debuted-marvelstudios-3.png" height="70px" width="250px"></a>
-				</div>
-				<div class="col-4 d-flex justify-content-end align-items-center">
-					<i class="darken me-4 fa-solid fa-magnifying-glass"></i>
-					<a class="btn-danger btn btn-sm text-white" href="#">Log in</a>
-				</div>
-			</div>
-		</header>
+  <div class="container">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light rounded border" aria-label="Eleventh navbar example"><!-- Nav Bar controls --> 
+      <div class="container-fluid" id="navbg">
+        <a class="navbar-brand brightness" href="#"><img src="https://www.freepnglogos.com/uploads/marvel-logo-png/new-marvel-studios-logo-debuted-marvelstudios-3.png" height="50px" width="180px"></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="" aria-controls="navbarsExample09" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon">test</span>
+        </button>
 
-		<hr>
-		    <div>
-		      <nav class="nav nav-masthead justify-content-center">
-		        <a class="nav-link active text-dark" aria-current="page" href="#">Blogs</a>
-		        <a class="nav-link text-dark" href="#">Featured</a>
-		        <a class="nav-link text-dark" href="#">Home</a>
-		        <a class="nav-link text-dark" href="#">About</a>
-		      </nav>
-		    </div>
+        <div class="collapse navbar-collapse">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="#">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Link</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="dropdown09" data-bs-toggle="dropdown" aria-expanded="false">Dropdown</a>
+              <ul class="dropdown-menu" aria-labelledby="dropdown09">
+                <li><a class="dropdown-item" href="#">Action</a></li>
+                <li><a class="dropdown-item" href="#">Another action</a></li>
+                <li><a class="dropdown-item" href="#">Something else here</a></li>
+                <li><a class="dropdown-item" href="login_screen.php">Logout</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+
+        <nav class="nav nav-masthead justify-content-center float-md-end">
+              <a class="nav-link active decor brightness" href="#" target="_blank"><img src="https://pic.onlinewebfonts.com/svg/img_24787.png" height="40px" width="40px"></a>
+        </nav>
+      </div>
+    </nav><!-- Nav Bar controls --> 
+  </div>
+
 	<br><br>
 
 		<main class="container">
@@ -130,11 +111,28 @@
 		</main>
 	<!-- Container -->
 		<footer class="blog-footer text-center">
-		  <p>&copy; 2022 Marvel, Inc</p>
 		  <p>
-		    <a href="#">Back to top</a>
+		    <a href="#" style="text-decoration: none; color: gray;">Back to top</a>
 		  </p>
 		</footer>
+     <div class="container pe-5"> <!-- FOOTER div -->
+        <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top mb-3">
+          <div class="col-md-4 d-flex align-items-center">
+            <a href="/" class="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1">
+              <svg class="bi" width="30" height="24"><use xlink:href="#bootstrap"/></svg>
+            </a>
+            <span class="text-muted">&copy; 2022 Marvel, Inc</span>
+          </div>
 
+          <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
+            <!--facebook -->
+            <li class="ms-3"><a href="https://www.facebook.com/MarvelPhilippines/?brand_redir=6883542487" target="_blank"><img class="opacity-50" src="https://cdn-icons-png.flaticon.com/512/20/20673.png" width="27" height="27"><use xlink:href="#facebook"></a></li>
+            <!--instagram-->
+            <li class="ms-3"><a href="https://www.instagram.com/marvel/" target="_blank"><img class="opacity-50" src="https://www.freepnglogos.com/uploads/logo-ig-png/logo-ig-instagram-new-logo-vector-download-5.png" width="28" height="28"><use xlink:href="#instagram"/></a></li>
+            <!--Twitter-->
+            <li class="ms-3"><a href=https://twitter.com/marvel" target="_blank"><img class="opacity-50" src="https://cdn-icons-png.flaticon.com/512/1384/1384017.png" width="27" height="27"><use xlink:href="#twitter"></a></li>
+          </ul>
+        </footer><!-- FOOTER div -->
+      </div>
 </body>
 </html>
