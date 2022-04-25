@@ -211,7 +211,7 @@
 	
 				<div class="register my-3 pt-2">
 					Not registered?
-					<a href="registration-screen.html">Create an acount</a>
+					<a href="signup_screen.php">Create an acount</a>
 		    		</div>	
 		    		<p class="mb-3 text-muted">&copy; 2017–2022</p>
 
