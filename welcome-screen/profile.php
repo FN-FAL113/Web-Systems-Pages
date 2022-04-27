@@ -1,3 +1,13 @@
+<?php 
+
+  session_start();
+
+  if( !isset( $_SESSION['is_logged_in'] )){
+    header("Location: ./login_screen.php");
+  }
+
+?>
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -46,7 +56,7 @@
         <div class="collapse navbar-collapse">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">Home</a>
+              <a class="nav-link active" aria-current="page" href="landing_screen.php">Home</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#">Link</a>
@@ -77,20 +87,21 @@
 
         <div class="col-4">
           <div class="profile mt-5 text-center">
-            <img src="https://i.kym-cdn.com/entries/icons/facebook/000/011/061/lelbron.jpg">
+            <img src="./uploads/<?php echo $_SESSION['user_info']['photo']; ?>">
+            <!-- <img src="https://i.kym-cdn.com/entries/icons/facebook/000/011/061/lelbron.jpg"> -->
           </div>
         </div>
          <div class="col-4 mt-5">
           <div class="float-start">
             <div>
-              <h3><span class="fs-5 text-muted">Username:</span> LeNerd</h3>
+              <h3><span class="fs-5 text-muted">Username: </span><?php echo $_SESSION['user_info']['username']; ?></h3>
               <hr>
-              <h4><span class="fs-6 text-muted">Name:</span>&nbsp; LeBron James</h4>
-              <h4><span class="fs-6 text-muted">E-mail:</span> LeKing@gmail.com</h4>
+              <h4><span class="fs-6 text-muted">Name:</span>&nbsp; <?php echo $_SESSION['user_info']['firstname']; ?></h4>
+              <h4><span class="fs-6 text-muted">E-mail:</span> <?php echo $_SESSION['user_info']['email']; ?></h4>
               <hr>
-              <h4><span class="fs-6 text-muted"><i class="fa-solid fa-user fa-xl"></i></span>&nbsp;Homosexual</h4>
-              <h4><span class="fs-6 text-muted"><i class="fa-solid fa-location-dot fa-xl"></i></span>&nbsp;&nbsp;Los Angeles</h4>
-              <h4><span class="fs-6 text-muted"><i class="fa-solid fa-cake-candles fa-xl"></i></span>&nbsp;00/00/0000</h4>
+              <h4><span class="fs-6 text-muted text-capitalize"><i class="fa-solid fa-user fa-xl"></i></span>&nbsp;<?php echo $_SESSION['user_info']['sex']; ?></h4>
+              <h4><span class="fs-6 text-muted"><i class="fa-solid fa-location-dot fa-xl"></i></span>&nbsp;&nbsp;<?php echo $_SESSION['user_info']['address']; ?></h4>
+              <h4><span class="fs-6 text-muted"><i class="fa-solid fa-cake-candles fa-xl"></i></span>&nbsp;<?php echo $_SESSION['user_info']['birthday']; ?></h4>
             </div>
           </div>
          </div>
@@ -98,12 +109,7 @@
           <div class="float-start">
                <div class="col-12">
               <h3>BIO</h3> 
-              <h5>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-              tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-              quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-              consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-              cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-              proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</h5>           
+              <h5><?php echo $_SESSION['user_info']['description']; ?></h5>           
           </div>
           </div>
          </div>
