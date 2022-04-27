@@ -1,6 +1,6 @@
 <?php
 
-  //update 46-49
+  //update 46-49, 101
 
   session_start();
 
@@ -98,7 +98,7 @@
                 <a class="dropdown-item my-1" href="#"><?php echo $_SESSION['user_info']['firstname'] . ' ' . $_SESSION['user_info']['lastname'] ?></a>
               </li>
               <li>
-                <a class="dropdown-item" href="#"><i class="fa-solid fa-user me-2"></i>My Profile</a>
+                <a class="dropdown-item" href="profile.php"><i class="fa-solid fa-user me-2"></i>My Profile</a>
               </li>
               <li>
                 <a class="dropdown-item" href="#"><i class="fa-solid fa-pen-to-square me-2"></i>Edit Profile</a>
