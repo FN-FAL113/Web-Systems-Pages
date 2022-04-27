@@ -1,13 +1,18 @@
 <?php
 //  update 145-159
 
+    session_start();
+
+    if( isset( $_SESSION['is_logged_in'] )){
+      header("Location: ./landing_screen.php");
+    }
+
     $isPost = $_SERVER["REQUEST_METHOD"] === "POST";
     $email_log = $_POST['email_log'] ?? null;
     $password_log = $_POST['password_log'] ?? null;
   
 
     $flag=0; 
-
 
 
     $error_icon ='<img src="https://www.seekpng.com/png/full/251-2514375_free-high-quality-error-youtube-icon-png-2018.png" height="20px" width="20px">';
@@ -147,9 +152,15 @@
                           $login_statement->bindValue(':password', md5($password_log)) ;
                           $login_statement->execute();
 
+                          $user_data = $login_statement->fetchAll(PDO::FETCH_ASSOC);
                           $count = $login_statement->rowcount();
                       
                           if ($count != 0):
+                            session_start();
+
+                            $_SESSION['user_info'] = $user_data[0]; // get first index, without index it will return 2D array
+                            $_SESSION['is_logged_in'] = 1;
+                            
                             header('location: landing_screen.php');
                           else:
                             $error_msg = " {$error_icon} Incorrect email or password.";
