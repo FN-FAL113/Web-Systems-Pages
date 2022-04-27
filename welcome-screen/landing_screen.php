@@ -1,5 +1,7 @@
 <?php
 
+  //update 46-49
+
   session_start();
 
   if( !isset( $_SESSION['is_logged_in'] )){
@@ -39,7 +41,12 @@
     #userProfile {
      
       border-radius: 50%;
-    }   
+    }  
+      
+    .nav .dropdown .user {
+      border: none;
+      outline: none;
+    }
 
     </style>
 
