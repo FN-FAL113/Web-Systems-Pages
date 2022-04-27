@@ -74,9 +74,8 @@
             </li>
           </ul>
         </div>
-        <?php if( isset( $_SESSION['is_logged_in'] )){ ?>
-
-         
+        
+        <?php if( isset( $_SESSION['is_logged_in'] )){ ?>         
         <nav class="nav nav-masthead justify-content-center float-md-end">
           <div class="dropdown">
             <button class="user dropdown-toggle bg-light" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -109,12 +108,11 @@
             </ul>
           </div>
         </nav>
-
         <?php } else{ ?>
-        <nav class="nav nav-masthead justify-content-center float-md-end">
-              <a class="nav-link active decor brightness" href="#" target="_blank"><a class="btn-danger btn btn-sm text-white" href="login_screen.php">Log in</a>
-        </nav>
-         <?php } ?>
+          <nav class="nav nav-masthead justify-content-center float-md-end">
+            <a class="nav-link active decor brightness" href="#" target="_blank"><a class="btn-danger btn btn-sm text-white" href="login_screen.php">Log in</a>
+          </nav>
+        <?php } ?>
 
       </div>
     </nav><!-- Nav Bar controls --> 
