@@ -1,5 +1,6 @@
 <?php
 //CHANGES IN LINE 9,35,246
+// add 337-345
 	$firstname = $_POST['firstname'] ?? null;
 	$lastname = $_POST['lastname'] ?? null;
 	$username = $_POST['username'] ?? null;
@@ -334,7 +335,13 @@
 			<?php if ($allPassed && $Passed): ?>
 
 				<script>
-					swal("Successfully Registered", "", "success");
+
+					swal("Registered Successfully!", "", "success")
+					.then((value) => {
+						if (value == true) {
+							window.location = "login_screen.php";
+						}
+					})
 				</script>
 
 			<?php endif; ?>	
