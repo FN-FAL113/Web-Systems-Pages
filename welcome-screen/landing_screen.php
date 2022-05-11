@@ -1,41 +1,21 @@
 <?php
 
-  //update 46-49, 101
-
   session_start();
 
   if( !isset( $_SESSION['is_logged_in'] )){
     header("Location: ./login_screen.php");
   }
 
-
     $pdo = new PDO('mysql:host=localhost;port=3306;dbname=marvel_blog', 'root', ''); // database connection 
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // set error
 
-    $stmt = $pdo->prepare('SELECT title FROM article_uploads');    // careful, without a LIMIT this can take long if your table is huge
+    $stmt = $pdo->prepare('SELECT * FROM article_uploads');    // careful, without a LIMIT this can take long if your table is huge
     $stmt->execute();
-    $titles = $stmt->fetchAll(PDO::FETCH_COLUMN);
+    $articles = $stmt->fetchAll();
 
-    $stmt = $pdo->prepare('SELECT article FROM article_uploads');    
-    $stmt->execute();
-    $articles = $stmt->fetchAll(PDO::FETCH_COLUMN);
+    var_dump($articles);
 
-    $stmt = $pdo->prepare('SELECT photo_name FROM article_uploads');    
-    $stmt->execute();
-    $photo_name =$stmt->fetchAll(PDO::FETCH_COLUMN);
-
-    $stmt = $pdo->prepare('SELECT article_id FROM article_uploads');    
-    $stmt->execute();
-    $article_id =$stmt->fetchAll(PDO::FETCH_COLUMN);
-
-    $stmt = $pdo->prepare('SELECT category FROM article_uploads');    
-    $stmt->execute();
-    $category=$stmt->fetchAll(PDO::FETCH_COLUMN);
-
-
-    //var_dump($photo_name);
-
-    $titles_len=count($titles)
+    $arraySize = count($articles);  
 
 ?>
 
@@ -165,12 +145,14 @@
         <div class="col-12 px-0">
             
             <h3 style="color: #da3545;">Newest post</h3>
-            <h1 class="display-4 fst-italic"><?php echo $titles[$titles_len-1]; ?> </h1>
-            <div class="ms-5 text-muted">ID:<?php echo $article_id[$titles_len-1];?> <span> | Category: <?php echo $category[$titles_len-1];?> </span></p></div>
+            <h1 class="display-4 fst-italic"><?php echo $articles[$arraySize-1]['title']; ?> </h1>
+            <div class="ms-5 text-muted">ID:<?php echo $articles[$arraySize-1]['article_id'];?> 
+              <span> | Category: <?php echo $articles[$arraySize-1]['category'];?> </span></p>
+            </div>
            
             <div class="text-center">
                 <div style="height: 500px; width: auto;">
-                <img style="height: 500px; width: auto; border: 5px solid darkgrey;" src= "thumbnails\<?php echo $photo_name[$titles_len-1]?>">
+                <img style="height: 500px; width: auto; border: 5px solid darkgrey;" src= "thumbnails\<?php echo $articles[$arraySize-1]['photo_name'];?>">
                 </div>
             </div>
           
@@ -180,21 +162,19 @@
 
         <div class="justify">
 
-             <p class="lead my-3"> <?php echo $articles[$titles_len-1]; ?> </p>
+             <p class="lead my-3"> <?php echo $articles[$arraySize-1]['article']; ?> </p>
           
         </div>
       </div>
 
       <div class="row mb-2">
 
-        <?php $newCount = $titles_len-2; 
+        <?php 
 
-          for($x=-1; $x<$newCount; $newCount-- ){
-            featured_article($titles[$newCount],$articles[$newCount],$photo_name[$newCount],$article_id[$newCount],$category[$newCount]);
+          for($x = $arraySize - 2; $x >= 0 ; $x--){  
+            featured_article($articles[$x]['title'], $articles[$x]['article'],
+            $articles[$x]['photo_name'], $articles[$x]['article_id'], $articles[$x]['category']);
           }
-
-
-
 
         ?>
      
@@ -221,16 +201,15 @@
             <!--instagram-->
             <li class="ms-3"><a href="https://www.instagram.com/marvel/" target="_blank"><img class="opacity-50" src="https://www.freepnglogos.com/uploads/logo-ig-png/logo-ig-instagram-new-logo-vector-download-5.png" width="28" height="28"><use xlink:href="#instagram"/></a></li>
             <!--Twitter-->
-            <li class="ms-3"><a href=https://twitter.com/marvel" target="_blank"><img class="opacity-50" src="https://cdn-icons-png.flaticon.com/512/1384/1384017.png" width="27" height="27"><use xlink:href="#twitter"></a></li>
+            <li class="ms-3"><a href="https://twitter.com/marvel" target="_blank"><img class="opacity-50" src="https://cdn-icons-png.flaticon.com/512/1384/1384017.png" width="27" height="27"><use xlink:href="#twitter"></a></li>
           </ul>
         </footer><!-- FOOTER div -->
       </div>
 </body>
 
 
-
-
 </html>
+
 <?php 
   
   function featured_article($titles,$articles,$photo_name,$article_id,$category){ 
@@ -240,7 +219,7 @@
                  echo             "<strong class=\"d-inline-block mb-2 text-primary text-danger\">$category</strong>";
                  echo             "<h3 class=\"mb-0 \">$titles</h3>";
                  echo             "<div class=\"mb-1 text-muted\">ID $article_id</div>";
-                echo              " <div class=\" mb-1\"style=\"height: 300px; width: auto;\"><img style=\"height: 300px; width: auto; border: 5px solid darkgrey;\" src=\"thumbnails\\$photo_name\"></div>";
+                 echo              " <div class=\" mb-1\"style=\"height: 300px; width: auto;\"><img style=\"height: 300px; width: auto; border: 5px solid darkgrey;\" src=\"thumbnails\\$photo_name\"></div>";
                  echo             "<p class=\"card-text mb-auto fw-light justify\">$articles</p>";
                  echo           "</div>";
                  echo     "</div>";
