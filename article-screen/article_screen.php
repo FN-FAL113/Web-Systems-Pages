@@ -16,7 +16,7 @@
     $GLOBALS['fieldIsSet'] = $GLOBALS['fieldNotEmpty'];
 
     if($isPost && $_FILES['upload']['name'] != null){
-        $target_dir = "./upload/";
+        $target_dir = "./thumbnails/";
         $imageFileType = strtolower(pathinfo($_FILES['upload']['name'],PATHINFO_EXTENSION));
         $time_stamp = time();
         $targetFile = $target_dir . "photo_{$time_stamp}.{$imageFileType}";
