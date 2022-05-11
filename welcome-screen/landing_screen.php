@@ -13,8 +13,6 @@
     $stmt->execute();
     $articles = $stmt->fetchAll();
 
-    var_dump($articles);
-
     $arraySize = count($articles);  
 
 ?>
