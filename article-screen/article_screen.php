@@ -1,8 +1,13 @@
 <?php
 
   // dinagdag 12, 34, 41
+// 	add code 7-9
 
-    session_start();  
+    session_start();
+
+	if( !isset( $_SESSION['is_logged_in'] )){
+      header("Location: ./landing_screen.php");
+    }
 
     $isPost = $_SERVER["REQUEST_METHOD"] === "POST";
     $title = $_POST['title'] ?? null;
