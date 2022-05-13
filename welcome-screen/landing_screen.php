@@ -1,5 +1,6 @@
 <?php
 
+//  line 118-120
   session_start();
 
   if( !isset( $_SESSION['is_logged_in'] )){
@@ -113,6 +114,9 @@
               </li>
               <li>
                 <a class="dropdown-item" href="#"><i class="fa-solid fa-pen-to-square me-2"></i>Edit Profile</a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="new-article-screen.php"><i class="fa-solid fa-blog me-2"></i>Blog</a>
               </li>
               <li>
                 <a class="dropdown-item" href="#"><i class="fa-solid fa-gear me-2"></i>Setting</a>
