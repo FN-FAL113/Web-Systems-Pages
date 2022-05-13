@@ -6,6 +6,19 @@
     header("Location: ./login_screen.php");
   }
 
+  $article_id = $_SESSION['user_info']['id'];
+
+  $pdo = new PDO('mysql:host=localhost;port=3306;dbname=marvel_blog', 'root', ''); // database connection 
+  $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // set error
+
+  $statement = $pdo->prepare('SELECT * FROM `article_uploads` WHERE `article_uploads`.`user_id` = :id ');
+	$statement->bindValue(':id', $article_id);
+	$statement->execute();
+	$data = $statement->fetchall(PDO::FETCH_ASSOC); 
+
+  $size = count($data);
+
+
 ?>
 
 <!doctype html>
@@ -118,41 +131,19 @@
 
       <div class="row mt-5">
         <hr>
-         <div class="col-12 text-center">
-              <h3 class="mb-5">Your blogs</h3> 
-             
-              <div class="row mb-2">
-                  <div class="col-md-6">
-                      <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative bg-dark">
-                        <div class="col p-4 d-flex flex-column position-static text-white">
-                          <strong class="d-inline-block mb-2 text-primary text-danger">World</strong>
-                          <h3 class="mb-0 ">Featured post</h3>
-                          <div class="mb-1 text-muted">Nov 12</div>
-                          <p class="card-text mb-auto fw-light">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
-                          <a href="#" class="stretched-link text-muted">Continue reading...</a>
-                        </div>
-                        <div class="col-auto d-none d-lg-block">
-                          <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-                    </div>
-                  </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative bg-dark">
-                        <div class="col p-4 d-flex flex-column position-static text-white">
-                          <strong class="d-inline-block mb-2 text-primary text-danger">World</strong>
-                          <h3 class="mb-0 ">Featured post</h3>
-                          <div class="mb-1 text-muted">Nov 12</div>
-                          <p class="card-text mb-auto fw-light">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
-                          <a href="#" class="stretched-link text-muted">Continue reading...</a>
-                        </div>
-                        <div class="col-auto d-none d-lg-block">
-                          <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-                    </div>
-                  </div>
-                  </div>
-                </div>          
-          </div>
-        </div>
+
+        <div class="col-12 text-center">
+              <h3 class="mb-5">Your blogs</h3>
+    </div>
+         
+        <?php 
+
+          for($x = $size - 1; $x >= 0 ; $x--){  
+              featured_article($data[$x]['title'], $data[$x]['article'],
+              $data[$x]['photo_name'], $data[$x]['article_id'], $data[$x]['category']);
+          }
+
+        ?>
         
       </div>
       
@@ -180,3 +171,22 @@
 
       
   </body>
+
+  <?php 
+  
+  function featured_article($titles,$articles,$photo_name,$article_id,$category){ 
+                 echo "<div class=\"col-md-6\">"; 
+                 echo         "<div class=\"row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative bg-dark\">";
+                 echo           "<div class=\"col p-4 d-flex flex-column position-static text-white\">";
+                 echo             "<strong class=\"d-inline-block mb-2 text-primary text-danger\">$category</strong>";
+                 echo             "<h3 class=\"mb-0 \">$titles</h3>";
+                 echo             "<div class=\"mb-1 text-muted\">ID $article_id</div>";
+                 echo              " <div class=\" mb-1\"style=\"height: 300px; width: auto;\"><img style=\"height: 300px; width: auto; border: 5px solid darkgrey;\" src=\"thumbnails\\$photo_name\"></div>";
+                 echo             "<p class=\"card-text mb-auto fw-light justify\">$articles</p>";
+                 echo           "</div>";
+                 echo     "</div>";
+                 echo    " </div> ";
+  
+  }
+
+?>
