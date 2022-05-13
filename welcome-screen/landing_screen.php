@@ -1,7 +1,8 @@
 <?php
 
-//  line 118-120
   session_start();
+
+  $private = 0;
 
   if( !isset( $_SESSION['is_logged_in'] )){
     header("Location: ./login_screen.php");
@@ -143,39 +144,49 @@
   <br><br>
 
     <main class="container">
-      <div class="p-4 p-md-5 mb-4 text-white rounded bg-dark">
-        <div class="col-12 px-0">
+
+          <?php for($i = $arraySize - 1; $i >= 0; $i--) { if($articles[$i]['visibility'] == 0){ $private = 1;  ?>
+          
+            <div class="p-4 p-md-5 mb-4 text-white rounded bg-dark">
+              <div class="col-12 px-0">
             
-            <h3 style="color: #da3545;">Newest post</h3>
-            <h1 class="display-4 fst-italic"><?php echo $articles[$arraySize-1]['title']; ?> </h1>
-            <div class="ms-5 text-muted">ID:<?php echo $articles[$arraySize-1]['article_id'];?> 
-              <span> | Category: <?php echo $articles[$arraySize-1]['category'];?> </span></p>
-            </div>
+                <h3 style="color: #da3545;">Newest post</h3>
+                <h1 class="display-4 fst-italic"><?php echo $articles[$i]['title']; ?> </h1>
+                <div class="ms-5 text-muted">ID:<?php echo $articles[$i]['article_id'];?> 
+                <span> | Category: <?php echo $articles[$i]['category'];?> </span></p>
+              </div>
            
             <div class="text-center">
                 <div style="height: 500px; width: auto;">
-                <img style="height: 500px; width: auto; border: 5px solid darkgrey;" src= "thumbnails\<?php echo $articles[$arraySize-1]['photo_name'];?>">
+                <img style="height: 500px; width: auto; border: 5px solid darkgrey;" src= "thumbnails\<?php echo $articles[$i]['photo_name'];?>">
                 </div>
             </div>
           
            
 
-        </div>
+            </div>
 
-        <div class="justify">
+            <div class="justify">
 
-             <p class="lead my-3"> <?php echo $articles[$arraySize-1]['article']; ?> </p>
+              <p class="lead my-3"> <?php echo $articles[$i]['article']; ?> </p>
           
-        </div>
+            </div>
+          
+          <?php } if($private == 1){ $arraySize = $i; break;} } ?>
+
       </div>
 
       <div class="row mb-2">
 
         <?php 
 
-          for($x = $arraySize - 2; $x >= 0 ; $x--){  
-            featured_article($articles[$x]['title'], $articles[$x]['article'],
-            $articles[$x]['photo_name'], $articles[$x]['article_id'], $articles[$x]['category']);
+          for($x = $arraySize - 2; $x >= 0 ; $x--){
+
+              if ($articles[$x]['visibility'] == 0) {
+                featured_article($articles[$x]['title'], $articles[$x]['article'],
+                $articles[$x]['photo_name'], $articles[$x]['article_id'], $articles[$x]['category']);
+              }
+            
           }
 
         ?>
