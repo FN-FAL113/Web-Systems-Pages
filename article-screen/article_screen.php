@@ -1,10 +1,15 @@
 <?php
 
+  // dinagdag 12, 34, 41
+
+    session_start();  
+
     $isPost = $_SERVER["REQUEST_METHOD"] === "POST";
     $title = $_POST['title'] ?? null;
     $category = $_POST['category'] ?? null;
     $article = $_POST['article'] ?? null;
     $visibility = $_POST['visibility'] ?? null;
+    $article_id = $_SESSION['user_info']['id'];
 
     $type = 0;
     $uploadOk = 0;
@@ -22,17 +27,18 @@
         $targetFile = $target_dir . "photo_{$time_stamp}.{$imageFileType}";
     }
 
-    function insertArticleEntry($title, $category, $article, $photo_name, $visibility) {
+    function insertArticleEntry($title, $category, $article, $photo_name, $visibility, $article_id) {
         $db = new PDO('mysql:host=localhost;port=3306;dbname=marvel_blog', 'root', '');
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $query = $db->prepare('INSERT INTO `article_uploads` ( `title`, `category`, `article`, `photo_name`, `visibility`) VALUES ( :title, :category, :article, :photo_name, :visibility ) ');
+        $query = $db->prepare('INSERT INTO `article_uploads` ( `title`, `category`, `article`, `photo_name`, `visibility`, `user_id`) VALUES (:title, :category, :article, :photo_name, :visibility, :id ) ');
 
         $query->bindValue(':title', $title);
         $query->bindValue(':category', $category);
         $query->bindValue(':article', $article);
         $query->bindValue(':photo_name', $photo_name);
         $query->bindValue(':visibility', $visibility);
+        $query->bindValue(':id', $article_id);
         $query->execute();
     }
 
@@ -200,7 +206,7 @@
         <div class="collapse navbar-collapse">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">Home</a>
+              <a class="nav-link active" aria-current="page" href="landing_screen.php">Home</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#">Link</a>
@@ -357,7 +363,7 @@
     <?php
         if($isPost && $GLOBALS['fieldIsSet'] == 1 && $type == 0){
             $uploadOk = move_uploaded_file( $_FILES["upload"]["tmp_name"] , $targetFile);
-            insertArticleEntry($title, $category, $article, "photo_{$time_stamp}.{$imageFileType}", $visibility);
+            insertArticleEntry($title, $category, $article, "photo_{$time_stamp}.{$imageFileType}", $visibility, $article_id);
         }
     ?>
 
