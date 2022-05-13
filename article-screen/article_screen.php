@@ -369,8 +369,14 @@
 
     <?php if ($uploadOk == 1): ?>
         <script>
-            swal("Successfully uploaded!", "" , "success");
-        </script>
+
+					swal("Uploaded Successfully!", "", "success")
+					.then((value) => {
+						if (value == true) {
+							window.location = "login_screen.php";
+						}
+					})
+				</script>
     <?php endif; ?>
 
     <?php
